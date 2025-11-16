@@ -45,24 +45,24 @@ const projects = [
 
 export default function Portfolio() {
   return (
-    <section className="relative py-32 md:py-48 lg:py-64">
+    <section className="relative py-24 md:py-32 lg:py-40">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-6 text-white">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-4 md:mb-6 text-white">
             Our Work
           </h2>
-          <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl lg:text-2xl text-white/80 max-w-3xl mx-auto">
             Showcasing digital experiences that push boundaries and inspire
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 lg:gap-7">
           {projects.map((project, index) => (
             <motion.div
               key={project.title}
@@ -73,7 +73,7 @@ export default function Portfolio() {
             >
               <Card hover glow={project.glow} className="h-full group">
                 {/* Project preview with depth */}
-                <div className="aspect-video bg-gradient-to-br from-neon-blue/20 via-neon-purple/15 to-neon-pink/10 rounded-glass-lg mb-6 flex items-center justify-center overflow-hidden relative">
+                <div className="aspect-video bg-gradient-to-br from-white/5 via-white/3 to-transparent rounded-glass-lg mb-5 flex items-center justify-center overflow-hidden relative">
                   <img 
                     src="/mockups/device-frame.svg" 
                     alt={project.title}
@@ -81,9 +81,9 @@ export default function Portfolio() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent" />
                   
-                  {/* Hover overlay with glow */}
+                  {/* Subtle hover overlay */}
                   <motion.div
-                    className={`absolute inset-0 bg-gradient-to-br ${project.glow === 'blue' ? 'from-neon-blue/20' : project.glow === 'purple' ? 'from-neon-purple/20' : 'from-neon-pink/20'} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                    className={`absolute inset-0 bg-gradient-to-br ${project.glow === 'blue' ? 'from-neon-blue/10' : project.glow === 'purple' ? 'from-neon-purple/10' : 'from-neon-pink/10'} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
                   />
                 </div>
                 

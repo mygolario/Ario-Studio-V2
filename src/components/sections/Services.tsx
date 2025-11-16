@@ -34,24 +34,24 @@ const services = [
 
 export default function Services() {
   return (
-    <section className="relative py-32 md:py-48 lg:py-64">
+    <section className="relative py-24 md:py-32 lg:py-40">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-6 text-white">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-4 md:mb-6 text-white">
             What We Do
           </h2>
-          <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl lg:text-2xl text-white/80 max-w-3xl mx-auto">
             Comprehensive digital solutions tailored to your needs
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {services.map((service, index) => {
             const IconComponent = service.icon
             return (
@@ -67,12 +67,12 @@ export default function Services() {
                 }}
               >
                 <Card hover glow={service.glow} className="h-full group relative overflow-hidden">
-                  {/* Ambient light behind card */}
-                  <div className={`absolute -inset-4 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-100 blur-2xl transition-opacity duration-500 pointer-events-none`} />
+                  {/* Subtle ambient light behind card */}
+                  <div className={`absolute -inset-2 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-50 blur-xl transition-opacity duration-500 pointer-events-none`} />
                   
                   {/* Premium animated icon */}
                   <motion.div
-                    className="relative z-10 mb-6 inline-flex"
+                    className="relative z-10 mb-5 inline-flex"
                     whileHover={{ 
                       scale: 1.1,
                       rotate: [0, -5, 5, 0],
@@ -80,8 +80,8 @@ export default function Services() {
                     transition={{ duration: 0.3 }}
                   >
                     <div className="relative">
-                      {/* Icon glow */}
-                      <div className={`absolute inset-0 blur-xl ${service.glow === 'blue' ? 'bg-neon-blue/50' : service.glow === 'purple' ? 'bg-neon-purple/50' : 'bg-neon-pink/50'} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                      {/* Subtle icon glow */}
+                      <div className={`absolute inset-0 blur-lg ${service.glow === 'blue' ? 'bg-neon-blue/20' : service.glow === 'purple' ? 'bg-neon-purple/20' : 'bg-neon-pink/20'} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                       <IconComponent 
                         className={`w-16 h-16 md:w-20 md:h-20 ${service.glow === 'blue' ? 'text-neon-blue' : service.glow === 'purple' ? 'text-neon-purple' : 'text-neon-pink'} transition-colors duration-300`}
                         strokeWidth={1.5}
@@ -89,10 +89,10 @@ export default function Services() {
                     </div>
                   </motion.div>
 
-                  <h3 className="text-2xl md:text-3xl font-display font-bold mb-4 relative z-10">
+                  <h3 className="text-xl md:text-2xl lg:text-2xl font-display font-bold mb-3 relative z-10">
                     {service.title}
                   </h3>
-                  <p className="text-white/80 mb-8 leading-relaxed relative z-10">
+                  <p className="text-white/75 mb-6 leading-relaxed relative z-10 text-sm md:text-base">
                     {service.description}
                   </p>
                   
@@ -123,13 +123,6 @@ export default function Services() {
                     ))}
                   </ul>
 
-                  {/* Glow sweep on hover */}
-                  <motion.div
-                    className={`absolute inset-0 bg-gradient-to-r from-transparent via-${service.glow === 'blue' ? 'neon-blue' : service.glow === 'purple' ? 'neon-purple' : 'neon-pink'}/20 to-transparent opacity-0 group-hover:opacity-100 pointer-events-none`}
-                    initial={{ x: '-100%' }}
-                    whileHover={{ x: '100%' }}
-                    transition={{ duration: 0.6, ease: 'easeInOut' }}
-                  />
                 </Card>
               </motion.div>
             )

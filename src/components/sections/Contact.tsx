@@ -29,19 +29,19 @@ export default function Contact() {
   }
 
   return (
-    <section className="relative py-32 md:py-48 lg:py-64">
+    <section className="relative py-24 md:py-32 lg:py-40">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-6 text-white">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-4 md:mb-6 text-white">
             Ready to Build Something Amazing?
           </h2>
-          <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl lg:text-2xl text-white/80 max-w-3xl mx-auto">
             Let's discuss your project and bring your vision to life
           </p>
         </motion.div>

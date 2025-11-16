@@ -47,7 +47,7 @@ export default function Hero() {
   return (
     <section 
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 md:py-32"
     >
       <ParticleBackground />
       
