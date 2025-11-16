@@ -1,12 +1,13 @@
 'use client'
 
-import { HTMLAttributes, forwardRef } from 'react'
-import { motion } from 'framer-motion'
+import { forwardRef } from 'react'
+import { motion, HTMLMotionProps } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
-interface CardProps extends HTMLAttributes<HTMLDivElement> {
+interface CardProps extends Omit<HTMLMotionProps<'div'>, 'children'> {
   hover?: boolean
   glow?: 'blue' | 'purple' | 'pink' | 'none'
+  children: React.ReactNode
 }
 
 const Card = forwardRef<HTMLDivElement, CardProps>(

@@ -9,11 +9,11 @@
   }
 
   * {
-    @apply border-border;
+    border-color: transparent;
   }
 
   body {
-    @apply bg-dark text-foreground;
+    @apply bg-dark text-white;
     background: radial-gradient(ellipse at bottom, #1a1a2e 0%, #000000 100%);
     min-height: 100vh;
   }

@@ -1,12 +1,13 @@
 'use client'
 
-import { InputHTMLAttributes, TextareaHTMLAttributes, forwardRef } from 'react'
-import { motion } from 'framer-motion'
+import { forwardRef } from 'react'
+import { motion, HTMLMotionProps } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends Omit<HTMLMotionProps<'input'>, 'type'> {
   label?: string
   error?: string
+  type?: string
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -42,7 +43,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
 Input.displayName = 'Input'
 
-interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TextareaProps extends Omit<HTMLMotionProps<'textarea'>, 'children'> {
   label?: string
   error?: string
 }
