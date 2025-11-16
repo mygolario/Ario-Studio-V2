@@ -85,6 +85,9 @@ const config: Config = {
         'glass-lg': '16px',
         'glass-xl': '24px',
       },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      },
     },
   },
   plugins: [],
