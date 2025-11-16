@@ -55,58 +55,42 @@ export default function ScrollStory() {
 
     panels.forEach((panel, index) => {
       const panelElement = panel as HTMLElement
+      const cardElement = panelElement.querySelector('.story-card') as HTMLElement
       
-      // GSAP ScrollTrigger pinning - reduced pin duration
+      // Create smooth accordion effect with ScrollTrigger
       ScrollTrigger.create({
         trigger: panelElement,
-        start: 'top top',
-        end: '+=60%',
-        pin: true,
-        pinSpacing: true,
+        start: 'top center',
+        end: 'bottom center',
         scrub: 1,
-        onEnter: () => {
-          gsap.to(panelElement, {
-            scale: 1.01,
-            duration: 0.5,
-            ease: 'power2.out',
-          })
-        },
-        onLeave: () => {
-          gsap.to(panelElement, {
-            scale: 1,
-            duration: 0.5,
-            ease: 'power2.out',
-          })
+        onUpdate: (self) => {
+          const progress = self.progress
+          
+          // Active card (progress near 0.5 = center)
+          const distanceFromCenter = Math.abs(progress - 0.5)
+          const isActive = distanceFromCenter < 0.3
+          
+          if (isActive) {
+            const activeProgress = 1 - (distanceFromCenter / 0.3)
+            gsap.to(cardElement, {
+              scale: 0.95 + (activeProgress * 0.05), // 0.95 to 1.0
+              opacity: 0.6 + (activeProgress * 0.4), // 0.6 to 1.0
+              padding: `calc(1rem + ${activeProgress * 0.5}rem) calc(1.25rem + ${activeProgress * 0.75}rem)`,
+              duration: 0.3,
+              ease: 'power2.out',
+            })
+          } else {
+            // Inactive card
+            gsap.to(cardElement, {
+              scale: 0.95,
+              opacity: 0.6,
+              padding: '1rem 1.25rem',
+              duration: 0.3,
+              ease: 'power2.out',
+            })
+          }
         },
       })
-
-      // Subtle parallax for background graphics
-      const graphics = panelElement.querySelector('.panel-graphics')
-      if (graphics) {
-        gsap.to(graphics, {
-          y: -50,
-          scrollTrigger: {
-            trigger: panelElement,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 1.5,
-          },
-        })
-      }
-
-      // Subtle text parallax
-      const text = panelElement.querySelector('.panel-text')
-      if (text) {
-        gsap.to(text, {
-          y: 30,
-          scrollTrigger: {
-            trigger: panelElement,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 1,
-          },
-        })
-      }
     })
 
     return () => {
@@ -135,7 +119,7 @@ export default function ScrollStory() {
       
       <Container>
         <motion.div
-          className="space-y-16 md:space-y-20 lg:space-y-24"
+          className="space-y-4 md:space-y-5 lg:space-y-6"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: '-100px' }}
@@ -173,31 +157,39 @@ function StoryPanel({
   const panelRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: panelRef,
-    offset: ['start end', 'end start'],
+    offset: ['start center', 'end center'],
   })
 
-  // Subtle parallax transforms
-  const textY = useTransform(scrollYProgress, [0, 0.5, 1], [30, 0, -30])
-  const graphicsY = useTransform(scrollYProgress, [0, 0.5, 1], [-20, 0, 20])
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.97, 1, 0.97])
+  // Smooth scale and opacity based on scroll position
+  const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.95, 1, 1, 0.95])
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.6, 1, 1, 0.6])
+  const textY = useTransform(scrollYProgress, [0, 0.5, 1], [15, 0, -15])
+  const graphicsY = useTransform(scrollYProgress, [0, 0.5, 1], [-10, 0, 10])
 
   return (
     <motion.div
       ref={panelRef}
-      className="story-panel relative min-h-[60vh] flex items-center justify-center"
-      style={{
-        opacity: prefersReducedMotion ? 1 : opacity,
-        scale: prefersReducedMotion ? 1 : scale,
-      }}
+      className="story-panel relative flex items-center justify-center"
     >
-      <div className="glass-premium rounded-glass-xl p-6 md:p-8 lg:p-10 relative overflow-hidden w-full max-w-5xl">
+      <motion.div
+        className="story-card glass-premium rounded-glass-xl relative overflow-hidden w-full max-w-5xl"
+        style={{
+          scale: prefersReducedMotion ? 1 : scale,
+          opacity: prefersReducedMotion ? 1 : opacity,
+        }}
+        initial={{ scale: 0.95, opacity: 0.6 }}
+      >
         {/* Subtle background gradient */}
-        <div className={`absolute inset-0 bg-gradient-to-br ${panel.gradient} opacity-20 pointer-events-none`} />
+        <motion.div
+          className={`absolute inset-0 bg-gradient-to-br ${panel.gradient} pointer-events-none`}
+          style={{
+            opacity: useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.15, 0.25, 0.25, 0.15]),
+          }}
+        />
         
         {/* Minimal background graphics */}
         <motion.div
-          className="panel-graphics absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 opacity-10 pointer-events-none"
+          className="panel-graphics absolute top-0 right-0 w-36 h-36 md:w-48 md:h-48 lg:w-64 lg:h-64 opacity-8 pointer-events-none"
           style={{
             y: prefersReducedMotion ? 0 : graphicsY,
           }}
@@ -209,14 +201,13 @@ function StoryPanel({
           />
         </motion.div>
 
-        <div className="relative z-10">
-          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8 lg:gap-10">
+        <div className="relative z-10 p-4 md:p-5 lg:p-6">
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-5 lg:gap-6">
             {/* Minimal icon */}
             <motion.div
               className="flex-shrink-0 relative"
               animate={prefersReducedMotion ? {} : {
-                rotate: [0, 3, -3, 0],
-                scale: [1, 1.05, 1],
+                rotate: [0, 2, -2, 0],
               }}
               transition={{
                 duration: 6,
@@ -227,19 +218,14 @@ function StoryPanel({
             >
               {/* Subtle icon glow */}
               <motion.div
-                className={`absolute inset-0 blur-xl ${panel.borderColor === 'border-neon-blue/20' ? 'bg-neon-blue/10' : panel.borderColor === 'border-neon-purple/20' ? 'bg-neon-purple/10' : 'bg-neon-pink/10'} rounded-full`}
-                animate={prefersReducedMotion ? {} : {
-                  opacity: [0.2, 0.4, 0.2],
-                  scale: [1, 1.1, 1],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
+                className={`absolute inset-0 blur-lg ${panel.borderColor === 'border-neon-blue/20' ? 'bg-neon-blue/10' : panel.borderColor === 'border-neon-purple/20' ? 'bg-neon-purple/10' : 'bg-neon-pink/10'} rounded-full`}
+                style={{
+                  opacity: useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.2, 0.4, 0.4, 0.2]),
+                  scale: useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [1, 1.1, 1.1, 1]),
                 }}
               />
               <IconComponent
-                className={`w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 ${panel.borderColor === 'border-neon-blue/20' ? 'text-neon-blue' : panel.borderColor === 'border-neon-purple/20' ? 'text-neon-purple' : 'text-neon-pink'} relative z-10`}
+                className={`w-10 h-10 md:w-12 md:h-12 lg:w-16 lg:h-16 ${panel.borderColor === 'border-neon-blue/20' ? 'text-neon-blue' : panel.borderColor === 'border-neon-purple/20' ? 'text-neon-purple' : 'text-neon-pink'} relative z-10 transition-all duration-500`}
                 strokeWidth={1.5}
               />
             </motion.div>
@@ -252,20 +238,20 @@ function StoryPanel({
               }}
             >
               <motion.h2
-                className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-4 text-white"
-                initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+                className="text-2xl md:text-3xl lg:text-4xl font-display font-bold mb-3 text-white"
+                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
                 {panel.title}
               </motion.h2>
               <motion.p
-                className="text-base md:text-lg lg:text-xl text-white/75 leading-relaxed max-w-2xl"
-                initial={{ opacity: 0, y: 20 }}
+                className="text-sm md:text-base lg:text-lg text-white/70 leading-relaxed max-w-2xl"
+                initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
               >
                 {panel.description}
               </motion.p>
@@ -275,17 +261,12 @@ function StoryPanel({
           {/* Subtle border accent */}
           <motion.div
             className={`absolute inset-0 border ${panel.borderColor} rounded-glass-xl pointer-events-none`}
-            animate={prefersReducedMotion ? {} : {
-              opacity: [0.1, 0.2, 0.1],
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              delay: index * 1.2,
+            style={{
+              opacity: useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.1, 0.25, 0.25, 0.1]),
             }}
           />
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   )
 }
