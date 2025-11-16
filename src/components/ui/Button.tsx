@@ -1,6 +1,6 @@
 'use client'
 
-import { ButtonHTMLAttributes, forwardRef } from 'react'
+import { forwardRef } from 'react'
 import { motion, HTMLMotionProps } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
@@ -12,12 +12,12 @@ interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'children'> {
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', children, ...props }, ref) => {
-    const baseStyles = 'relative font-medium transition-all duration-300 rounded-lg overflow-hidden group'
+    const baseStyles = 'relative font-medium transition-all duration-300 rounded-xl overflow-hidden group'
     
     const variants = {
-      primary: 'bg-white text-dark hover:bg-white/90 shadow-lg hover:shadow-xl',
-      secondary: 'glass border border-white/20 text-white hover:bg-white/5 hover:border-white/30',
-      ghost: 'text-white/70 hover:text-white hover:bg-white/5',
+      primary: 'bg-primary text-background hover:bg-primary-light shadow-glow-accent hover:shadow-glow-accent-lg',
+      secondary: 'glass border border-border text-text-primary hover:bg-surface-glass hover:border-border-light',
+      ghost: 'text-text-muted hover:text-text-primary hover:bg-surface-glass',
     }
 
     const sizes = {
@@ -38,10 +38,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         <span className="relative z-10">{children}</span>
-        {/* Subtle hover accent - minimal */}
+        {/* Hover glow effect for primary */}
         {variant === 'primary' && (
           <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-neon-blue/10 to-neon-purple/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"
+            className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"
             initial={false}
           />
         )}
@@ -53,4 +53,3 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = 'Button'
 
 export default Button
-

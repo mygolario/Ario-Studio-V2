@@ -13,37 +13,24 @@
   }
 
   body {
-    @apply bg-dark text-white;
+    @apply bg-background text-text-primary;
     min-height: 100vh;
-    /* Background handled by CinematicBackground component */
+    font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 
   html {
     scroll-behavior: smooth;
   }
 
-  /* Environmental effects - toned down */
+  /* Subtle environmental effects */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
     pointer-events: none;
     z-index: 9999;
-    background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.2) 100%);
-    opacity: 0.4;
-  }
-
-  /* Bloom effect for neon elements */
-  .bloom {
-    filter: drop-shadow(0 0 10px currentColor) 
-            drop-shadow(0 0 20px currentColor)
-            drop-shadow(0 0 30px currentColor);
-  }
-
-  /* Subtle chromatic aberration */
-  .chromatic {
-    filter: drop-shadow(-1px 0 0 rgba(0, 212, 255, 0.5))
-            drop-shadow(1px 0 0 rgba(236, 72, 153, 0.5));
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 100%);
+    opacity: 0.3;
   }
 }
 
@@ -52,56 +39,54 @@
     text-wrap: balance;
   }
 
-  /* Enhanced Glassmorphism */
+  /* Figma-based Glassmorphism */
   .glass {
-    @apply bg-glass backdrop-blur-md border border-white/10;
+    @apply bg-surface-glass backdrop-blur-md border border-border;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.05) 100%);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
   .glass-strong {
-    @apply bg-glass-medium backdrop-blur-lg border border-white/20;
+    @apply bg-surface-glass-medium backdrop-blur-lg border border-border-light;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.08) 100%);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   }
 
   .glass-premium {
-    @apply bg-glass-strong backdrop-blur-xl border border-white/25;
+    @apply bg-surface-glass-strong backdrop-blur-xl border border-border-light;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%);
     box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5), 
                 0 0 0 1px rgba(255, 255, 255, 0.1),
                 inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
 
-  /* Refined Neon Glows - Subtle accent only */
-  .neon-glow-blue {
-    text-shadow: 0 0 4px rgba(0, 212, 255, 0.4),
-                 0 0 8px rgba(0, 212, 255, 0.2);
+  /* Subtle text glows */
+  .text-glow-primary {
+    text-shadow: 0 0 8px rgba(0, 212, 255, 0.3),
+                 0 0 16px rgba(0, 212, 255, 0.2);
   }
 
-  .neon-glow-purple {
-    text-shadow: 0 0 4px rgba(168, 85, 247, 0.4),
-                 0 0 8px rgba(168, 85, 247, 0.2);
+  .text-glow-secondary {
+    text-shadow: 0 0 8px rgba(168, 85, 247, 0.3),
+                 0 0 16px rgba(168, 85, 247, 0.2);
   }
 
-  .neon-glow-pink {
-    text-shadow: 0 0 4px rgba(236, 72, 153, 0.4),
-                 0 0 8px rgba(236, 72, 153, 0.2);
+  .text-glow-accent {
+    text-shadow: 0 0 8px rgba(236, 72, 153, 0.3),
+                 0 0 16px rgba(236, 72, 153, 0.2);
   }
 
   /* Gradient Text */
-  .gradient-text-blue {
-    @apply bg-gradient-to-r from-neon-blue via-neon-cyan to-neon-blue bg-clip-text text-transparent;
+  .gradient-text-primary {
+    @apply bg-gradient-to-r from-primary via-primary-light to-primary bg-clip-text text-transparent;
   }
 
-  .gradient-text-purple {
-    @apply bg-gradient-to-r from-neon-purple via-neon-pink to-neon-purple bg-clip-text text-transparent;
+  .gradient-text-secondary {
+    @apply bg-gradient-to-r from-secondary via-secondary-light to-secondary bg-clip-text text-transparent;
   }
 
-  .gradient-text-rainbow {
-    @apply bg-gradient-to-r from-neon-blue via-neon-purple via-neon-pink to-neon-blue bg-clip-text text-transparent;
-    background-size: 200% auto;
-    animation: gradient-shift 3s ease infinite;
+  .gradient-text-accent {
+    @apply bg-gradient-to-r from-accent via-accent-light to-accent bg-clip-text text-transparent;
   }
 
   /* Smooth transitions */
@@ -114,16 +99,7 @@
   }
 }
 
-@keyframes gradient-shift {
-  0%, 100% {
-    background-position: 0% center;
-  }
-  50% {
-    background-position: 100% center;
-  }
-}
-
-/* Custom scrollbar */
+/* Custom scrollbar - Figma theme */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -140,4 +116,3 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 212, 255, 0.5);
 }
-
