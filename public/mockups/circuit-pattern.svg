@@ -1,0 +1,40 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="circuitGlow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Circuit board pattern -->
+  <g stroke="#00d4ff" stroke-width="2" fill="none" opacity="0.6" filter="url(#circuitGlow)">
+    <!-- Horizontal lines -->
+    <line x1="50" y1="50" x2="350" y2="50"/>
+    <line x1="50" y1="150" x2="350" y2="150"/>
+    <line x1="50" y1="250" x2="350" y2="250"/>
+    
+    <!-- Vertical lines -->
+    <line x1="100" y1="0" x2="100" y2="300"/>
+    <line x1="200" y1="0" x2="200" y2="300"/>
+    <line x1="300" y1="0" x2="300" y2="300"/>
+    
+    <!-- Connection nodes -->
+    <circle cx="100" cy="50" r="4" fill="#00d4ff"/>
+    <circle cx="200" cy="50" r="4" fill="#00d4ff"/>
+    <circle cx="300" cy="50" r="4" fill="#00d4ff"/>
+    <circle cx="100" cy="150" r="4" fill="#a855f7"/>
+    <circle cx="200" cy="150" r="4" fill="#a855f7"/>
+    <circle cx="300" cy="150" r="4" fill="#a855f7"/>
+    <circle cx="100" cy="250" r="4" fill="#ec4899"/>
+    <circle cx="200" cy="250" r="4" fill="#ec4899"/>
+    <circle cx="300" cy="250" r="4" fill="#ec4899"/>
+    
+    <!-- Diagonal connections -->
+    <line x1="100" y1="50" x2="200" y2="150"/>
+    <line x1="200" y1="150" x2="300" y2="250"/>
+  </g>
+</svg>
+

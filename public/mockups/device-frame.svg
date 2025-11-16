@@ -1,0 +1,22 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Browser window frame -->
+  <rect x="0" y="0" width="400" height="300" rx="8" fill="rgba(10, 10, 10, 0.8)" stroke="rgba(0, 212, 255, 0.3)" stroke-width="2"/>
+  
+  <!-- Browser header -->
+  <rect x="0" y="0" width="400" height="40" rx="8" fill="rgba(0, 0, 0, 0.6)"/>
+  
+  <!-- Browser controls -->
+  <circle cx="15" cy="20" r="5" fill="rgba(236, 72, 153, 0.5)"/>
+  <circle cx="35" cy="20" r="5" fill="rgba(168, 85, 247, 0.5)"/>
+  <circle cx="55" cy="20" r="5" fill="rgba(0, 212, 255, 0.5)"/>
+  
+  <!-- Content area with grid pattern -->
+  <rect x="20" y="60" width="360" height="220" rx="4" fill="rgba(0, 212, 255, 0.05)" stroke="rgba(0, 212, 255, 0.1)" stroke-width="1"/>
+  
+  <!-- Abstract content blocks -->
+  <rect x="40" y="80" width="120" height="40" rx="4" fill="rgba(168, 85, 247, 0.2)" stroke="rgba(168, 85, 247, 0.3)" stroke-width="1"/>
+  <rect x="40" y="140" width="200" height="20" rx="2" fill="rgba(0, 212, 255, 0.2)" stroke="rgba(0, 212, 255, 0.3)" stroke-width="1"/>
+  <rect x="40" y="180" width="160" height="20" rx="2" fill="rgba(0, 212, 255, 0.2)" stroke="rgba(0, 212, 255, 0.3)" stroke-width="1"/>
+  <rect x="240" y="80" width="120" height="120" rx="4" fill="rgba(236, 72, 153, 0.2)" stroke="rgba(236, 72, 153, 0.3)" stroke-width="1"/>
+</svg>
+
