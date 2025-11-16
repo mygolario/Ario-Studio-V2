@@ -54,10 +54,10 @@ export default function Portfolio() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-6xl font-display font-bold mb-4 neon-glow-blue">
+          <h2 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 neon-glow-blue">
             Our Work
           </h2>
-          <p className="text-xl text-white/70 max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto">
             Showcasing digital experiences that push boundaries and inspire
           </p>
         </motion.div>
@@ -71,27 +71,36 @@ export default function Portfolio() {
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
-              <Card hover glow={project.glow} className="h-full">
-                <div className="aspect-video bg-gradient-to-br from-neon-blue/20 to-neon-purple/20 rounded-lg mb-4 flex items-center justify-center overflow-hidden relative">
+              <Card hover glow={project.glow} className="h-full group">
+                {/* Project preview with depth */}
+                <div className="aspect-video bg-gradient-to-br from-neon-blue/20 via-neon-purple/15 to-neon-pink/10 rounded-glass-lg mb-6 flex items-center justify-center overflow-hidden relative">
                   <img 
                     src="/mockups/device-frame.svg" 
                     alt={project.title}
-                    className="w-full h-full object-contain opacity-60"
+                    className="w-full h-full object-contain opacity-70 group-hover:opacity-90 transition-opacity duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent" />
+                  
+                  {/* Hover overlay with glow */}
+                  <motion.div
+                    className={`absolute inset-0 bg-gradient-to-br ${project.glow === 'blue' ? 'from-neon-blue/20' : project.glow === 'purple' ? 'from-neon-purple/20' : 'from-neon-pink/20'} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                  />
                 </div>
-                <h3 className="text-2xl font-display font-bold mb-2">
+                
+                <h3 className="text-2xl md:text-3xl font-display font-bold mb-3">
                   {project.title}
                 </h3>
-                <p className="text-white/70 mb-4">{project.subtitle}</p>
+                <p className="text-white/80 mb-6 leading-relaxed">{project.subtitle}</p>
                 <div className="flex flex-wrap gap-2">
                   {project.tags.map((tag) => (
-                    <span
+                    <motion.span
                       key={tag}
-                      className="px-3 py-1 text-xs glass rounded-full text-white/80"
+                      className="px-4 py-1.5 text-xs glass-premium rounded-full text-white/90"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ type: 'spring', stiffness: 400 }}
                     >
                       {tag}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
               </Card>

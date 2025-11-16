@@ -7,7 +7,7 @@ import Services from '@/components/sections/Services'
 import About from '@/components/sections/About'
 import Contact from '@/components/sections/Contact'
 import Footer from '@/components/sections/Footer'
-import CinematicBackground from '@/components/shared/CinematicBackground'
+import AdvancedBackground from '@/components/shared/AdvancedBackground'
 import { useGSAPScrollAnimations } from '@/lib/gsap-setup'
 
 export default function Home() {
@@ -15,7 +15,7 @@ export default function Home() {
 
   return (
     <main className="relative">
-      <CinematicBackground />
+      <AdvancedBackground />
       <Hero />
       <ScrollStory />
       <Portfolio />

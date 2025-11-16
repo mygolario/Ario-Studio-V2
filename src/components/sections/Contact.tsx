@@ -38,10 +38,10 @@ export default function Contact() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-6xl font-display font-bold mb-4 neon-glow-blue">
+          <h2 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 neon-glow-blue">
             Ready to Build Something Amazing?
           </h2>
-          <p className="text-xl text-white/70 max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto">
             Let's discuss your project and bring your vision to life
           </p>
         </motion.div>

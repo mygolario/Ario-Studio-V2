@@ -114,12 +114,41 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
           <motion.div
             className={`absolute -inset-4 rounded-glass-xl blur-2xl opacity-0 pointer-events-none ${glow === 'blue' ? 'bg-neon-blue/20' : glow === 'purple' ? 'bg-neon-purple/20' : glow === 'pink' ? 'bg-neon-pink/20' : 'bg-white/10'}`}
             animate={isHovered ? {
-              opacity: [0, 0.6, 0],
-              scale: [1, 1.2, 1],
+              opacity: [0, 0.8, 0],
+              scale: [1, 1.3, 1],
             } : {}}
             transition={{
-              duration: 2,
+              duration: 2.5,
               repeat: isHovered ? Infinity : 0,
+              ease: 'easeInOut',
+            }}
+            style={{
+              filter: 'blur(40px)',
+            }}
+          />
+        )}
+
+        {/* Light sweep on hover */}
+        {hover && (
+          <motion.div
+            className="absolute inset-0 rounded-glass-xl opacity-0 pointer-events-none"
+            style={{
+              background: glow === 'blue' 
+                ? 'linear-gradient(to right, transparent, rgba(0, 212, 255, 0.3), transparent)'
+                : glow === 'purple'
+                ? 'linear-gradient(to right, transparent, rgba(168, 85, 247, 0.3), transparent)'
+                : glow === 'pink'
+                ? 'linear-gradient(to right, transparent, rgba(236, 72, 153, 0.3), transparent)'
+                : 'linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent)',
+            }}
+            animate={isHovered ? {
+              x: ['-100%', '100%'],
+              opacity: [0, 0.6, 0],
+            } : {}}
+            transition={{
+              duration: 1,
+              repeat: isHovered ? Infinity : 0,
+              repeatDelay: 1,
               ease: 'easeInOut',
             }}
           />

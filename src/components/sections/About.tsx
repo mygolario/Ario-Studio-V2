@@ -14,7 +14,7 @@ export default function About() {
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-4xl md:text-6xl font-display font-bold mb-6 neon-glow-pink">
+            <h2 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-8 neon-glow-pink">
               About Ario Studio
             </h2>
             <div className="space-y-4 text-lg text-white/80 leading-relaxed">
