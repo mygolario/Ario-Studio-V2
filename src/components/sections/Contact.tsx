@@ -29,7 +29,7 @@ export default function Contact() {
   }
 
   return (
-    <section className="relative py-20 md:py-32">
+    <section className="relative py-32 md:py-48 lg:py-64">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 30 }}

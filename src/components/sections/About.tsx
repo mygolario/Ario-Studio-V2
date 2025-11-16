@@ -5,7 +5,7 @@ import Container from '@/components/ui/Container'
 
 export default function About() {
   return (
-    <section className="relative py-20 md:py-32">
+    <section className="relative py-32 md:py-48 lg:py-64">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 items-center">
           <motion.div
