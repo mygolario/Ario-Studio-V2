@@ -30,15 +30,29 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <motion.button
         ref={ref}
         className={cn(baseStyles, variants[variant], sizes[size], className)}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ 
+          scale: 1.03,
+          boxShadow: variant === 'primary' 
+            ? '0 0 40px rgba(0, 212, 255, 0.6), 0 0 80px rgba(0, 212, 255, 0.3)' 
+            : undefined,
+        }}
+        whileTap={{ scale: 0.97 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
         {...props}
       >
         <span className="relative z-10">{children}</span>
         {variant === 'primary' && (
           <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-neon-purple to-neon-pink opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            className="absolute inset-0 bg-gradient-to-r from-neon-purple to-neon-pink opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"
             initial={false}
+          />
+        )}
+        {/* Glow effect on hover */}
+        {variant === 'primary' && (
+          <motion.div
+            className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 blur-xl bg-neon-blue/50 -z-10"
+            initial={false}
+            transition={{ duration: 0.3 }}
           />
         )}
       </motion.button>
