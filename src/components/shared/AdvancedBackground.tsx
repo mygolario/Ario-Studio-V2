@@ -65,78 +65,49 @@ export default function AdvancedBackground() {
         }}
       />
 
-      {/* Volumetric glow spots with enhanced motion */}
+      {/* Minimal glow spots - toned down */}
       <motion.div
-        className="absolute top-1/4 left-1/4 w-64 h-64 md:w-[600px] md:h-[600px] bg-neon-blue/12 rounded-full blur-3xl"
+        className="absolute top-1/4 left-1/4 w-64 h-64 md:w-[600px] md:h-[600px] bg-neon-blue/4 rounded-full blur-3xl"
         animate={{
-          scale: [1, 1.4, 1],
-          opacity: [0.2, 0.5, 0.2],
-          x: [0, 80, 0],
-          y: [0, -50, 0],
+          scale: [1, 1.2, 1],
+          opacity: [0.1, 0.2, 0.1],
+          x: [0, 40, 0],
+          y: [0, -30, 0],
         }}
         transition={{
-          duration: 18,
+          duration: 25,
           repeat: Infinity,
           ease: 'easeInOut',
         }}
       />
       
       <motion.div
-        className="absolute bottom-1/4 right-1/4 w-64 h-64 md:w-[700px] md:h-[700px] bg-neon-purple/12 rounded-full blur-3xl"
+        className="absolute bottom-1/4 right-1/4 w-64 h-64 md:w-[500px] md:h-[500px] bg-neon-purple/4 rounded-full blur-3xl"
         animate={{
-          scale: [1.3, 1, 1.3],
-          opacity: [0.2, 0.6, 0.2],
-          x: [0, -60, 0],
-          y: [0, 70, 0],
+          scale: [1.1, 1, 1.1],
+          opacity: [0.1, 0.2, 0.1],
+          x: [0, -30, 0],
+          y: [0, 40, 0],
         }}
         transition={{
-          duration: 22,
+          duration: 30,
           repeat: Infinity,
           ease: 'easeInOut',
-          delay: 5,
-        }}
-      />
-
-      <motion.div
-        className="absolute top-1/2 right-1/3 w-48 h-48 md:w-96 md:h-96 bg-neon-pink/10 rounded-full blur-3xl"
-        animate={{
-          scale: [1, 1.5, 1],
-          opacity: [0.15, 0.4, 0.15],
-        }}
-        transition={{
-          duration: 15,
-          repeat: Infinity,
-          ease: 'easeInOut',
-          delay: 10,
-        }}
-      />
-
-      {/* Additional accent glows */}
-      <motion.div
-        className="absolute bottom-1/3 left-1/3 w-40 h-40 md:w-80 md:h-80 bg-neon-cyan/8 rounded-full blur-3xl"
-        animate={{
-          scale: [1.2, 1, 1.2],
-          opacity: [0.1, 0.3, 0.1],
-        }}
-        transition={{
-          duration: 16,
-          repeat: Infinity,
-          ease: 'easeInOut',
-          delay: 7,
+          delay: 8,
         }}
       />
 
       {/* Gradient fog overlay with depth */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-dark/50 to-dark/90" />
       
-      {/* Top cinematic spotlight */}
+      {/* Minimal top spotlight */}
       <motion.div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[700px] bg-gradient-to-b from-neon-blue/15 via-neon-purple/8 to-transparent blur-3xl"
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[600px] bg-gradient-to-b from-white/3 via-transparent to-transparent blur-3xl"
         animate={{
-          opacity: [0.3, 0.6, 0.3],
+          opacity: [0.2, 0.3, 0.2],
         }}
         transition={{
-          duration: 10,
+          duration: 12,
           repeat: Infinity,
           ease: 'easeInOut',
         }}

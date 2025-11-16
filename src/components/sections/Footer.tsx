@@ -22,7 +22,7 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-3xl font-display font-bold neon-glow-blue mb-2">
+            <h3 className="text-2xl font-display font-bold text-white mb-2">
               Ario Studio
             </h3>
             <p className="text-white/60 text-sm">

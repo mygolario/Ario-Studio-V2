@@ -255,7 +255,7 @@ function StoryPanel({
               }}
             >
               <motion.h2
-                className={`text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 ${panel.glowClass}`}
+                className={`text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-6 text-white`}
                 initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: '-50px' }}

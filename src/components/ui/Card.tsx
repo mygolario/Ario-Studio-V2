@@ -83,19 +83,19 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         {...props}
       >
-        {/* Deep gradient background */}
-        <div className={`absolute inset-0 bg-gradient-to-br ${glow === 'blue' ? 'from-neon-blue/10 via-neon-purple/5 to-transparent' : glow === 'purple' ? 'from-neon-purple/10 via-neon-pink/5 to-transparent' : glow === 'pink' ? 'from-neon-pink/10 via-neon-purple/5 to-transparent' : 'from-white/5 to-transparent'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+        {/* Subtle gradient background - minimal */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${glow === 'blue' ? 'from-neon-blue/5 via-transparent to-transparent' : glow === 'purple' ? 'from-neon-purple/5 via-transparent to-transparent' : glow === 'pink' ? 'from-neon-pink/5 via-transparent to-transparent' : 'from-white/3 to-transparent'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
         
-        {/* Glowing border with rim light */}
+        {/* Subtle border - minimal neon accent */}
         <motion.div
-          className={`absolute inset-0 rounded-glass-xl border-2 ${borderGlowClasses[glow]} pointer-events-none`}
+          className={`absolute inset-0 rounded-glass-xl border ${borderGlowClasses[glow]} pointer-events-none`}
           animate={isHovered ? {
-            opacity: [0.3, 0.6, 0.3],
+            opacity: [0.2, 0.4, 0.2],
           } : {
-            opacity: 0.2,
+            opacity: 0.1,
           }}
           transition={{
-            duration: 2,
+            duration: 3,
             repeat: isHovered ? Infinity : 0,
             ease: 'easeInOut',
           }}
@@ -109,46 +109,17 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
           {children}
         </div>
 
-        {/* Hover glow bloom effect */}
+        {/* Subtle hover glow - minimal */}
         {hover && (
           <motion.div
-            className={`absolute -inset-4 rounded-glass-xl blur-2xl opacity-0 pointer-events-none ${glow === 'blue' ? 'bg-neon-blue/20' : glow === 'purple' ? 'bg-neon-purple/20' : glow === 'pink' ? 'bg-neon-pink/20' : 'bg-white/10'}`}
+            className={`absolute -inset-2 rounded-glass-xl blur-xl opacity-0 pointer-events-none ${glow === 'blue' ? 'bg-neon-blue/8' : glow === 'purple' ? 'bg-neon-purple/8' : glow === 'pink' ? 'bg-neon-pink/8' : 'bg-white/5'}`}
             animate={isHovered ? {
-              opacity: [0, 0.8, 0],
-              scale: [1, 1.3, 1],
+              opacity: [0, 0.3, 0],
+              scale: [1, 1.1, 1],
             } : {}}
             transition={{
-              duration: 2.5,
+              duration: 3,
               repeat: isHovered ? Infinity : 0,
-              ease: 'easeInOut',
-            }}
-            style={{
-              filter: 'blur(40px)',
-            }}
-          />
-        )}
-
-        {/* Light sweep on hover */}
-        {hover && (
-          <motion.div
-            className="absolute inset-0 rounded-glass-xl opacity-0 pointer-events-none"
-            style={{
-              background: glow === 'blue' 
-                ? 'linear-gradient(to right, transparent, rgba(0, 212, 255, 0.3), transparent)'
-                : glow === 'purple'
-                ? 'linear-gradient(to right, transparent, rgba(168, 85, 247, 0.3), transparent)'
-                : glow === 'pink'
-                ? 'linear-gradient(to right, transparent, rgba(236, 72, 153, 0.3), transparent)'
-                : 'linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent)',
-            }}
-            animate={isHovered ? {
-              x: ['-100%', '100%'],
-              opacity: [0, 0.6, 0],
-            } : {}}
-            transition={{
-              duration: 1,
-              repeat: isHovered ? Infinity : 0,
-              repeatDelay: 1,
               ease: 'easeInOut',
             }}
           />
