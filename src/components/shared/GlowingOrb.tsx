@@ -14,9 +14,9 @@ export default function GlowingOrb({ size = 'lg', intensity = 0.15 }: GlowingOrb
   const prefersReducedMotion = useReducedMotion()
 
   const sizes = {
-    sm: 'w-48 h-48 md:w-64 md:h-64',
-    md: 'w-64 h-64 md:w-96 md:h-96',
-    lg: 'w-80 h-80 md:w-[500px] md:h-[500px]',
+    sm: 'w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64',
+    md: 'w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96',
+    lg: 'w-64 h-64 sm:w-80 sm:h-80 md:w-[500px] md:h-[500px]',
   }
 
   return (

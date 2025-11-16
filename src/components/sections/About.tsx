@@ -41,7 +41,7 @@ export default function About() {
             transition={{ duration: 0.8 }}
             className="relative"
           >
-            <div className="glass-strong rounded-2xl p-8 aspect-square flex items-center justify-center relative overflow-hidden">
+            <div className="glass-premium rounded-glass-xl p-8 md:p-12 aspect-square flex items-center justify-center relative overflow-hidden">
               {/* Holographic portrait effect */}
               <div className="absolute inset-0 bg-gradient-to-br from-neon-blue/20 via-neon-purple/20 to-neon-pink/20" />
               

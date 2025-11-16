@@ -43,9 +43,9 @@ export default function CinematicBackground() {
         }}
       />
 
-      {/* Glow spots */}
+      {/* Glow spots - responsive sizes */}
       <motion.div
-        className="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-blue/10 rounded-full blur-3xl"
+        className="absolute top-1/4 left-1/4 w-64 h-64 md:w-96 md:h-96 bg-neon-blue/10 rounded-full blur-3xl"
         animate={{
           scale: [1, 1.3, 1],
           opacity: [0.2, 0.4, 0.2],
@@ -60,7 +60,7 @@ export default function CinematicBackground() {
       />
       
       <motion.div
-        className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-neon-purple/10 rounded-full blur-3xl"
+        className="absolute bottom-1/4 right-1/4 w-64 h-64 md:w-[500px] md:h-[500px] bg-neon-purple/10 rounded-full blur-3xl"
         animate={{
           scale: [1.2, 1, 1.2],
           opacity: [0.2, 0.5, 0.2],
@@ -76,7 +76,7 @@ export default function CinematicBackground() {
       />
 
       <motion.div
-        className="absolute top-1/2 right-1/3 w-80 h-80 bg-neon-pink/8 rounded-full blur-3xl"
+        className="absolute top-1/2 right-1/3 w-48 h-48 md:w-80 md:h-80 bg-neon-pink/8 rounded-full blur-3xl"
         animate={{
           scale: [1, 1.4, 1],
           opacity: [0.15, 0.35, 0.15],
