@@ -29,10 +29,10 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased relative`}>
         {/* Full-screen animated gradient background - baunov/gradients-bg */}
-        <div className="fixed inset-0 -z-10">
+        <div className="fixed inset-0 -z-10 bg-black">
           <BackgroundGradientAnimation
-            gradientBackgroundStart="rgb(10, 10, 15)"
-            gradientBackgroundEnd="rgb(5, 10, 25)"
+            gradientBackgroundStart="rgb(0, 0, 0)"
+            gradientBackgroundEnd="rgb(0, 0, 0)"
             firstColor="168, 85, 247"
             secondColor="0, 212, 255"
             thirdColor="236, 72, 153"
@@ -44,8 +44,6 @@ export default function RootLayout({
             interactive={true}
             containerClassName="w-full h-full"
           />
-          {/* Dark overlay for better text readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60 pointer-events-none" />
         </div>
         <div className="relative z-10">
           {children}
