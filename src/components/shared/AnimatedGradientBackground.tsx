@@ -6,18 +6,18 @@ import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
 
 export default function AnimatedGradientBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const particlesRef = useRef<HTMLDivElement>(null)
   const prefersReducedMotion = useReducedMotion()
   const { scrollYProgress } = useScroll()
+  const animationFrameRef = useRef<number>()
 
-  // Parallax shift on scroll
-  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, 100])
+  // Parallax shift on scroll (reduced intensity)
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, 30])
 
   useEffect(() => {
     if (prefersReducedMotion || !canvasRef.current) return
 
     const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true })
     if (!ctx) return
 
     const resizeCanvas = () => {
@@ -37,7 +37,33 @@ export default function AnimatedGradientBackground() {
     ]
 
     let time = 0
-    const speed = 0.0002 // Slow cinematic speed (20-40s loops)
+    const speed = 0.00015 // Slightly slower for better performance
+
+    // Pre-calculate grain texture once (much more efficient)
+    let grainTexture: ImageData | null = null
+    const generateGrain = () => {
+      const tempCanvas = document.createElement('canvas')
+      tempCanvas.width = 256
+      tempCanvas.height = 256
+      const tempCtx = tempCanvas.getContext('2d')
+      if (!tempCtx) return null
+      
+      const imageData = tempCtx.createImageData(256, 256)
+      const data = imageData.data
+      
+      for (let i = 0; i < data.length; i += 4) {
+        const noise = (Math.random() - 0.5) * 4 // Reduced grain intensity
+        data[i] = Math.max(0, Math.min(255, 128 + noise))     // R
+        data[i + 1] = Math.max(0, Math.min(255, 128 + noise)) // G
+        data[i + 2] = Math.max(0, Math.min(255, 128 + noise)) // B
+        data[i + 3] = 255 // Alpha
+      }
+      
+      tempCtx.putImageData(imageData, 0, 0)
+      return tempCanvas
+    }
+    
+    const grainCanvas = generateGrain()
 
     const draw = () => {
       time += speed
@@ -45,12 +71,12 @@ export default function AnimatedGradientBackground() {
       // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      // Layer 1: Base gradient
+      // Layer 1: Base gradient (optimized)
       const gradient1 = ctx.createLinearGradient(
-        canvas.width * (0.5 + Math.sin(time) * 0.4),
-        canvas.height * (0.5 + Math.cos(time * 0.8) * 0.4),
-        canvas.width * (0.5 - Math.sin(time) * 0.4),
-        canvas.height * (0.5 - Math.cos(time * 0.8) * 0.4)
+        canvas.width * (0.5 + Math.sin(time) * 0.3),
+        canvas.height * (0.5 + Math.cos(time * 0.8) * 0.3),
+        canvas.width * (0.5 - Math.sin(time) * 0.3),
+        canvas.height * (0.5 - Math.cos(time * 0.8) * 0.3)
       )
 
       const colorIndex1 = Math.floor(time) % colors.length
@@ -64,21 +90,21 @@ export default function AnimatedGradientBackground() {
       const g1 = Math.floor(c1.g + (c2.g - c1.g) * t)
       const b1 = Math.floor(c1.b + (c2.b - c1.b) * t)
 
-      gradient1.addColorStop(0, `rgba(${r1}, ${g1}, ${b1}, 0.25)`)
-      gradient1.addColorStop(0.5, `rgba(${Math.floor(r1 * 0.8)}, ${Math.floor(g1 * 0.8)}, ${Math.floor(b1 * 0.8)}, 0.2)`)
-      gradient1.addColorStop(1, `rgba(${r1}, ${g1}, ${b1}, 0.15)`)
+      gradient1.addColorStop(0, `rgba(${r1}, ${g1}, ${b1}, 0.2)`)
+      gradient1.addColorStop(0.5, `rgba(${Math.floor(r1 * 0.8)}, ${Math.floor(g1 * 0.8)}, ${Math.floor(b1 * 0.8)}, 0.15)`)
+      gradient1.addColorStop(1, `rgba(${r1}, ${g1}, ${b1}, 0.1)`)
 
       ctx.fillStyle = gradient1
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-      // Layer 2: Secondary gradient (offset)
+      // Layer 2: Secondary gradient (simplified)
       const gradient2 = ctx.createRadialGradient(
-        canvas.width * (0.3 + Math.sin(time * 1.2) * 0.3),
-        canvas.height * (0.7 + Math.cos(time * 0.9) * 0.3),
+        canvas.width * (0.3 + Math.sin(time * 1.2) * 0.2),
+        canvas.height * (0.7 + Math.cos(time * 0.9) * 0.2),
         0,
-        canvas.width * (0.3 + Math.sin(time * 1.2) * 0.3),
-        canvas.height * (0.7 + Math.cos(time * 0.9) * 0.3),
-        canvas.width * 0.8
+        canvas.width * (0.3 + Math.sin(time * 1.2) * 0.2),
+        canvas.height * (0.7 + Math.cos(time * 0.9) * 0.2),
+        canvas.width * 0.6
       )
 
       const nextColorIndex = (colorIndex2 + 1) % colors.length
@@ -87,89 +113,34 @@ export default function AnimatedGradientBackground() {
       const g2 = Math.floor(c2.g + (c3.g - c2.g) * t)
       const b2 = Math.floor(c2.b + (c3.b - c2.b) * t)
 
-      gradient2.addColorStop(0, `rgba(${r2}, ${g2}, ${b2}, 0.2)`)
+      gradient2.addColorStop(0, `rgba(${r2}, ${g2}, ${b2}, 0.15)`)
       gradient2.addColorStop(1, 'transparent')
 
       ctx.fillStyle = gradient2
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-      // Add grain/noise texture
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-      const data = imageData.data
-
-      for (let i = 0; i < data.length; i += 4) {
-        const noise = (Math.random() - 0.5) * 6 // Subtle grain
-        data[i] = Math.max(0, Math.min(255, data[i] + noise))     // R
-        data[i + 1] = Math.max(0, Math.min(255, data[i + 1] + noise)) // G
-        data[i + 2] = Math.max(0, Math.min(255, data[i + 2] + noise)) // B
+      // Apply grain texture (much more efficient - tiled pattern)
+      if (grainCanvas) {
+        const pattern = ctx.createPattern(grainCanvas, 'repeat')
+        if (pattern) {
+          ctx.globalAlpha = 0.15 // Reduced opacity
+          ctx.fillStyle = pattern
+          ctx.fillRect(0, 0, canvas.width, canvas.height)
+          ctx.globalAlpha = 1.0
+        }
       }
 
-      ctx.putImageData(imageData, 0, 0)
-
-      requestAnimationFrame(draw)
+      animationFrameRef.current = requestAnimationFrame(draw)
     }
 
     draw()
 
     return () => {
       window.removeEventListener('resize', resizeCanvas)
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
     }
-  }, [prefersReducedMotion])
-
-  // Floating dust/particles
-  useEffect(() => {
-    if (prefersReducedMotion || !particlesRef.current) return
-
-    const particles: Array<{
-      x: number
-      y: number
-      vx: number
-      vy: number
-      size: number
-      opacity: number
-    }> = []
-
-    for (let i = 0; i < 15; i++) {
-      particles.push({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        vx: (Math.random() - 0.5) * 0.1,
-        vy: (Math.random() - 0.5) * 0.1,
-        size: Math.random() * 2 + 1,
-        opacity: Math.random() * 0.3 + 0.1,
-      })
-    }
-
-    const animate = () => {
-      if (!particlesRef.current) return
-
-      particlesRef.current.innerHTML = ''
-
-      particles.forEach((particle) => {
-        particle.x += particle.vx
-        particle.y += particle.vy
-
-        if (particle.x < 0) particle.x = window.innerWidth
-        if (particle.x > window.innerWidth) particle.x = 0
-        if (particle.y < 0) particle.y = window.innerHeight
-        if (particle.y > window.innerHeight) particle.y = 0
-
-        const dot = document.createElement('div')
-        dot.style.position = 'absolute'
-        dot.style.left = `${particle.x}px`
-        dot.style.top = `${particle.y}px`
-        dot.style.width = `${particle.size}px`
-        dot.style.height = `${particle.size}px`
-        dot.style.borderRadius = '50%'
-        dot.style.background = `rgba(168, 85, 247, ${particle.opacity})`
-        dot.style.pointerEvents = 'none'
-        particlesRef.current?.appendChild(dot)
-      })
-
-      requestAnimationFrame(animate)
-    }
-
-    animate()
   }, [prefersReducedMotion])
 
   if (prefersReducedMotion) {
@@ -190,20 +161,17 @@ export default function AnimatedGradientBackground() {
       
       <motion.canvas
         ref={canvasRef}
-        className="fixed inset-0 -z-10 opacity-60"
+        className="fixed inset-0 -z-10 opacity-50"
         style={{
           y: parallaxY,
+          willChange: 'transform',
+          imageRendering: 'optimizeQuality',
         }}
       />
-      {/* Floating dust particles */}
-      <div
-        ref={particlesRef}
-        className="fixed inset-0 -z-10 pointer-events-none"
-      />
       {/* Subtle overlay to ensure text readability */}
-      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-transparent via-transparent to-transparent pointer-events-none opacity-30" 
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-transparent via-transparent to-transparent pointer-events-none opacity-20" 
         style={{
-          background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.2) 100%)',
+          background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.15) 100%)',
         }}
       />
     </>

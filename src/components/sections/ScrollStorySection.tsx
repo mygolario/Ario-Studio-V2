@@ -76,7 +76,7 @@ export default function ScrollStorySection() {
 
     // Pin the section with proper end value to allow smooth scrolling
     const pinDuration = blockElements.length * window.innerHeight * 1.5
-    ScrollTrigger.create({
+    const pinTrigger = ScrollTrigger.create({
       trigger: container,
       start: 'top top',
       end: () => `+=${pinDuration}`,
@@ -85,6 +85,8 @@ export default function ScrollStorySection() {
       anticipatePin: 1,
       invalidateOnRefresh: true,
     })
+    
+    const scrollTriggers: ScrollTrigger[] = [pinTrigger]
 
     // Animate each block
     blockElements.forEach((block, index) => {
@@ -107,8 +109,8 @@ export default function ScrollStorySection() {
         })
       }
 
-      // Enter animation
-      ScrollTrigger.create({
+      // Enter animation (optimized with shorter durations)
+      const blockTrigger = ScrollTrigger.create({
         trigger: container,
         start: `top top-=${index * window.innerHeight * 1.5}`,
         end: `top top-=${(index + 1) * window.innerHeight * 1.5}`,
@@ -118,8 +120,8 @@ export default function ScrollStorySection() {
             opacity: 1,
             scale: 1,
             y: 0,
-            duration: 1.2,
-            ease: 'power4.out',
+            duration: 0.8,
+            ease: 'power3.out',
           })
 
           // Deactivate previous block
@@ -129,8 +131,8 @@ export default function ScrollStorySection() {
               opacity: 0.2,
               scale: 0.85,
               y: -50,
-              duration: 1,
-              ease: 'power4.out',
+              duration: 0.6,
+              ease: 'power3.out',
             })
           }
 
@@ -150,8 +152,8 @@ export default function ScrollStorySection() {
             opacity: 0.2,
             scale: 0.85,
             y: -50,
-            duration: 1,
-            ease: 'power4.out',
+            duration: 0.6,
+            ease: 'power3.out',
           })
         },
         onEnterBack: () => {
@@ -160,20 +162,18 @@ export default function ScrollStorySection() {
             opacity: 1,
             scale: 1,
             y: 0,
-            duration: 1.2,
-            ease: 'power4.out',
+            duration: 0.8,
+            ease: 'power3.out',
           })
         },
       })
+      
+      scrollTriggers.push(blockTrigger)
     })
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger.vars.trigger === container || 
-            (trigger.vars.trigger as HTMLElement)?.classList?.contains('story-block')) {
-          trigger.kill()
-        }
-      })
+      // Clean up all ScrollTriggers created in this effect
+      scrollTriggers.forEach(trigger => trigger.kill())
     }
   }, [prefersReducedMotion])
 

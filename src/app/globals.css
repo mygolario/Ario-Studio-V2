@@ -18,11 +18,17 @@
     font-feature-settings: 'rlig' 1, 'calt' 1;
     background: transparent;
     overflow-x: hidden;
+    /* Performance optimizations */
+    transform: translateZ(0);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   html {
     background: transparent;
     overflow-x: hidden;
+    /* Performance optimizations */
+    transform: translateZ(0);
   }
 
   /* Global typography - Apple/RelevanceAI style */

@@ -193,6 +193,7 @@ export default function CinematicHero() {
                 rotateX: prefersReducedMotion ? 0 : rotateX,
                 rotateY: prefersReducedMotion ? 0 : rotateY,
                 transformStyle: 'preserve-3d',
+                willChange: prefersReducedMotion ? 'auto' : 'transform',
               }}
               animate={prefersReducedMotion ? {} : {
                 y: [0, -4, 0],
@@ -206,7 +207,7 @@ export default function CinematicHero() {
               }}
             >
               <motion.div
-                className="relative rounded-3xl p-10 md:p-14 bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/25 backdrop-blur-2xl border border-primary/40"
+                className="relative rounded-3xl p-10 md:p-14 bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/25 backdrop-blur-xl border border-primary/40"
                 animate={isHovered ? {
                   scale: 1.05,
                 } : {
