@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import './globals.css'
-import FullScreenGradientBackground from '@/components/shared/FullScreenGradientBackground'
+import BackgroundGradientAnimation from '@/components/ui/background-gradient-animation'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -28,8 +28,23 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased relative`}>
-        {/* Full-screen animated gradient background */}
-        <FullScreenGradientBackground />
+        {/* Full-screen animated gradient background - Aceternity */}
+        <div className="fixed inset-0 -z-10">
+          <BackgroundGradientAnimation
+            gradientBackgroundStart="rgb(15, 15, 20)"
+            gradientBackgroundEnd="rgb(0, 17, 82)"
+            firstColor="168, 85, 247"
+            secondColor="0, 212, 255"
+            thirdColor="236, 72, 153"
+            fourthColor="14, 165, 233"
+            fifthColor="168, 85, 247"
+            pointerColor="140, 100, 255"
+            size="80%"
+            blendingValue="hard-light"
+            interactive={true}
+            containerClassName="w-full h-full"
+          />
+        </div>
         <div className="relative z-10">
           {children}
         </div>
