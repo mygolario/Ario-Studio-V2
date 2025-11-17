@@ -1,7 +1,7 @@
 'use client'
 
-import Header from '@/components/layout/Header'
-import Hero from '@/components/sections/Hero'
+import Navbar from '@/components/layout/Navbar'
+import CinematicHero from '@/components/sections/CinematicHero'
 import ScrollStory from '@/components/sections/ScrollStory'
 import Portfolio from '@/components/sections/Portfolio'
 import Services from '@/components/sections/Services'
@@ -10,7 +10,6 @@ import Process from '@/components/sections/Process'
 import CTABand from '@/components/sections/CTABand'
 import Contact from '@/components/sections/Contact'
 import Footer from '@/components/sections/Footer'
-import AdvancedBackground from '@/components/shared/AdvancedBackground'
 import { useGSAPScrollAnimations } from '@/lib/gsap-setup'
 
 export default function Home() {
@@ -18,9 +17,8 @@ export default function Home() {
 
   return (
     <main className="relative">
-      <Header />
-      <AdvancedBackground />
-      <Hero />
+      <Navbar />
+      <CinematicHero />
       <ScrollStory />
       <Portfolio />
       <Services />
