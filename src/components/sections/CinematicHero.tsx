@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react'
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion'
-import { ChevronDown, ArrowRight } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Container from '@/components/ui/Container'
 import AnimatedGradientBackground from '@/components/shared/AnimatedGradientBackground'
@@ -27,11 +27,11 @@ export default function CinematicHero() {
   const x = useMotionValue(0)
   const yMouse = useMotionValue(0)
   
-  const rotateX = useSpring(useTransform(yMouse, [-0.5, 0.5], [10, -10]), {
+  const rotateX = useSpring(useTransform(yMouse, [-0.5, 0.5], [8, -8]), {
     stiffness: 300,
     damping: 30,
   })
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-10, 10]), {
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), {
     stiffness: 300,
     damping: 30,
   })
@@ -70,17 +70,18 @@ export default function CinematicHero() {
     }
   }, [x, yMouse, prefersReducedMotion])
 
-  // GSAP cinematic reveal
+  // Heavy cinematic intro animation
   useEffect(() => {
     if (prefersReducedMotion || !sectionRef.current) return
 
-    const tl = gsap.timeline({ delay: 0.3 })
+    const tl = gsap.timeline({ delay: 0.2 })
     
+    // Line 1: "Cinematic AI websites"
     tl.fromTo(
-      sectionRef.current.querySelector('.hero-title'),
+      sectionRef.current.querySelector('.hero-line-1'),
       {
         opacity: 0,
-        y: 60,
+        y: 40,
         filter: 'blur(20px)',
       },
       {
@@ -91,11 +92,29 @@ export default function CinematicHero() {
         ease: 'power4.out',
       }
     )
+    // Line 2: "that feel alive."
+    .fromTo(
+      sectionRef.current.querySelector('.hero-line-2'),
+      {
+        opacity: 0,
+        y: 40,
+        filter: 'blur(20px)',
+      },
+      {
+        opacity: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        duration: 1.2,
+        ease: 'power4.out',
+      },
+      '-=0.6'
+    )
+    // Subtitle
     .fromTo(
       sectionRef.current.querySelector('.hero-subtitle'),
       {
         opacity: 0,
-        y: 40,
+        y: 30,
       },
       {
         opacity: 1,
@@ -103,13 +122,14 @@ export default function CinematicHero() {
         duration: 0.8,
         ease: 'power4.out',
       },
-      '-=0.6'
+      '-=0.4'
     )
+    // 3D Card
     .fromTo(
       sectionRef.current.querySelector('.hero-card'),
       {
         opacity: 0,
-        scale: 0.8,
+        scale: 0.9,
         y: 50,
       },
       {
@@ -119,13 +139,14 @@ export default function CinematicHero() {
         duration: 1,
         ease: 'power4.out',
       },
-      '-=0.4'
+      '-=0.3'
     )
+    // CTAs
     .fromTo(
       sectionRef.current.querySelector('.hero-ctas'),
       {
         opacity: 0,
-        y: 30,
+        y: 20,
       },
       {
         opacity: 1,
@@ -133,7 +154,7 @@ export default function CinematicHero() {
         duration: 0.6,
         ease: 'power4.out',
       },
-      '-=0.3'
+      '-=0.2'
     )
 
     return () => {
@@ -152,37 +173,19 @@ export default function CinematicHero() {
           y: prefersReducedMotion ? 0 : y,
         }}
       >
-        {/* Parallax layers */}
-        <div className="absolute inset-0">
-          <motion.div
-            className="absolute inset-0 opacity-20"
-            style={{
-              background: 'radial-gradient(ellipse at center, rgba(168, 85, 247, 0.2) 0%, transparent 70%)',
-            }}
-            animate={prefersReducedMotion ? {} : {
-              scale: [1, 1.2, 1],
-              opacity: [0.15, 0.25, 0.15],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          />
-        </div>
-
         <Container size="xl" className="relative z-10">
           <div className="max-w-5xl mx-auto text-center">
-            {/* Main Title - Apple style */}
-            <h1 className="hero-title text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-bold text-text-primary leading-[1.1] tracking-[-0.02em] mb-6">
-              <span className="block bg-gradient-to-b from-primary via-secondary to-accent bg-clip-text text-transparent">
-                AI Studio
+            {/* Main Title - Two lines with stagger */}
+            <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-semibold text-text-primary leading-[1.1] tracking-[-0.02em] mb-6">
+              <span className="hero-line-1 block">Cinematic AI websites</span>
+              <span className="hero-line-2 block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                that feel alive.
               </span>
             </h1>
 
             {/* Subtitle */}
-            <p className="hero-subtitle text-xl md:text-2xl lg:text-3xl text-text-secondary leading-relaxed max-w-3xl mx-auto mb-12 font-light">
-              Build teams of AI agents that work together seamlessly.
+            <p className="hero-subtitle text-lg md:text-xl lg:text-2xl text-text-secondary leading-relaxed max-w-3xl mx-auto mb-12 font-light">
+              Motion-first, AI-focused websites for founders, SaaS, and creative brands.
             </p>
 
             {/* 3D Floating Card */}
@@ -194,9 +197,19 @@ export default function CinematicHero() {
                 rotateY: prefersReducedMotion ? 0 : rotateY,
                 transformStyle: 'preserve-3d',
               }}
+              animate={prefersReducedMotion ? {} : {
+                y: [0, -4, 0],
+              }}
+              transition={{
+                y: {
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                },
+              }}
             >
               <motion.div
-                className="relative rounded-2xl p-8 md:p-12 bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/20 backdrop-blur-xl border border-primary/30"
+                className="relative rounded-3xl p-10 md:p-14 bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/25 backdrop-blur-2xl border border-primary/40"
                 animate={isHovered ? {
                   scale: 1.05,
                 } : {
@@ -204,15 +217,16 @@ export default function CinematicHero() {
                 }}
                 transition={{ duration: 0.3 }}
                 style={{
-                  boxShadow: '0 20px 60px rgba(168, 85, 247, 0.3), 0 0 0 1px rgba(0, 212, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                  boxShadow: '0 25px 70px rgba(168, 85, 247, 0.4), 0 0 0 1px rgba(0, 212, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
                 }}
               >
-                {/* Inner glow */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/10 via-transparent to-black/20 pointer-events-none" />
+                {/* Inner glow layers */}
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/15 via-transparent to-black/25 pointer-events-none" />
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-primary/10 via-transparent to-secondary/10 pointer-events-none" />
                 
                 {/* Content */}
                 <div className="relative z-10">
-                  <div className="text-2xl md:text-3xl font-display font-semibold text-text-primary mb-2">
+                  <div className="text-2xl md:text-3xl font-display font-semibold text-text-primary mb-3">
                     AI Creative Lab
                   </div>
                   <p className="text-base md:text-lg text-text-secondary">
@@ -220,14 +234,14 @@ export default function CinematicHero() {
                   </p>
                 </div>
 
-                {/* Glow effect */}
+                {/* Edge glow */}
                 <motion.div
-                  className="absolute -inset-4 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 blur-2xl -z-10"
+                  className="absolute -inset-1 rounded-3xl bg-gradient-to-br from-primary/30 via-secondary/30 to-accent/30 blur-2xl -z-10"
                   animate={isHovered ? {
-                    opacity: 0.6,
-                    scale: 1.1,
+                    opacity: 0.7,
+                    scale: 1.15,
                   } : {
-                    opacity: 0.3,
+                    opacity: 0.4,
                     scale: 1,
                   }}
                   transition={{ duration: 0.3 }}
@@ -246,14 +260,10 @@ export default function CinematicHero() {
                 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button variant="primary" size="lg" className="text-base md:text-lg px-8 py-4 relative overflow-hidden group">
-                  <span className="relative z-10 flex items-center gap-2">
-                    Start a project
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                  {/* Glow border */}
+                <Button variant="primary" size="lg" className="text-base md:text-lg px-8 py-4 relative overflow-hidden group rounded-full backdrop-blur-sm border border-primary/30">
+                  <span className="relative z-10">Start a project</span>
                   <motion.div
-                    className="absolute inset-0 rounded-xl border-2 border-primary/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full"
                     initial={false}
                   />
                 </Button>
@@ -265,10 +275,8 @@ export default function CinematicHero() {
                 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button variant="secondary" size="lg" className="text-base md:text-lg px-8 py-4 backdrop-blur-sm border border-border/50 group">
-                  <span className="flex items-center gap-2">
-                    Watch showreel
-                  </span>
+                <Button variant="secondary" size="lg" className="text-base md:text-lg px-8 py-4 backdrop-blur-sm border border-border/50 rounded-full group">
+                  Watch showreel
                 </Button>
               </motion.div>
             </motion.div>
@@ -280,11 +288,11 @@ export default function CinematicHero() {
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2 }}
+          transition={{ delay: 2.5 }}
         >
           <motion.div
             className="flex flex-col items-center gap-2 text-text-muted text-sm"
-            animate={prefersReducedMotion ? {} : { y: [0, 8, 0] }}
+            animate={prefersReducedMotion ? {} : { y: [0, 6, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           >
             <span>Scroll to explore</span>

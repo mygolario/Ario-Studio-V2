@@ -15,8 +15,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const baseStyles = 'relative font-medium transition-all duration-300 rounded-xl overflow-hidden group'
     
     const variants = {
-      primary: 'bg-primary text-background hover:bg-primary-light shadow-glow-accent hover:shadow-glow-accent-lg',
-      secondary: 'glass border border-border text-text-primary hover:bg-surface-glass hover:border-border-light',
+      primary: 'bg-primary/90 text-background hover:bg-primary-light shadow-glow-accent hover:shadow-glow-accent-lg backdrop-blur-sm border border-primary/30',
+      secondary: 'glass border border-border/50 text-text-primary hover:bg-surface-glass hover:border-border-light backdrop-blur-sm',
       ghost: 'text-text-muted hover:text-text-primary hover:bg-surface-glass',
     }
 
