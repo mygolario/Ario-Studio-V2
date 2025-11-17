@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import './globals.css'
-import BackgroundGradientAnimation from '@/components/ui/background-gradient-animation'
+import GalaxyBackground from '@/components/ui/galaxy-background'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -28,23 +28,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased relative`}>
-        {/* Full-screen animated gradient background - baunov/gradients-bg */}
-        <div className="fixed inset-0 -z-10 bg-black">
-          <BackgroundGradientAnimation
-            gradientBackgroundStart="rgb(0, 0, 0)"
-            gradientBackgroundEnd="rgb(0, 0, 0)"
-            firstColor="168, 85, 247"
-            secondColor="0, 212, 255"
-            thirdColor="236, 72, 153"
-            fourthColor="14, 165, 233"
-            fifthColor="168, 85, 247"
-            pointerColor="140, 100, 255"
-            size="80%"
-            blendingValue="normal"
-            interactive={true}
-            containerClassName="w-full h-full"
-          />
-        </div>
+        {/* Galaxy background with stars and floating particles */}
+        <GalaxyBackground />
         <div className="relative z-10">
           {children}
         </div>
