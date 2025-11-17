@@ -175,6 +175,10 @@ const config: Config = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(var(--tw-gradient-stops))',
       },
+      perspective: {
+        '1000': '1000px',
+        '2000': '2000px',
+      },
     },
   },
   plugins: [],

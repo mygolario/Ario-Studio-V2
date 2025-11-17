@@ -1,17 +1,25 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { Play, ArrowRight } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Container from '@/components/ui/Container'
-import LensFlare from '@/components/shared/LensFlare'
-import FloatingAIAgent from '@/components/shared/FloatingAIAgent'
 import ParticleField from '@/components/shared/ParticleField'
 import NebulaBackground from '@/components/shared/NebulaBackground'
+import Orange3DCard from '@/components/shared/Orange3DCard'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
 
 export default function CinematicHero() {
   const prefersReducedMotion = useReducedMotion()
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  })
+
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
+  const y = useTransform(scrollYProgress, [0, 0.5], [0, 100])
 
   // Animation variants
   const containerVariants = {
@@ -19,8 +27,8 @@ export default function CinematicHero() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
       },
     },
   }
@@ -39,37 +47,34 @@ export default function CinematicHero() {
   }
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-24">
+    <motion.section 
+      ref={sectionRef}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-24"
+      style={{
+        opacity: prefersReducedMotion ? 1 : opacity,
+        y: prefersReducedMotion ? 0 : y,
+      }}
+    >
       {/* Galaxy Background Layers */}
       <div className="absolute inset-0">
         {/* Base dark background */}
-        <div className="absolute inset-0 bg-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background-secondary to-background" />
         
-        {/* Radial gradients for galaxy effect */}
-        <div 
-          className="absolute inset-0 opacity-60" 
-          style={{ 
-            background: 'radial-gradient(ellipse at top center, rgba(0, 212, 255, 0.15) 0%, transparent 70%)',
-          }} 
-        />
-        <div 
-          className="absolute inset-0 opacity-50"
-          style={{ 
-            background: 'radial-gradient(ellipse at bottom right, rgba(168, 85, 247, 0.12) 0%, transparent 70%)',
-          }} 
-        />
-        <div 
-          className="absolute inset-0 opacity-40"
-          style={{ 
-            background: 'radial-gradient(ellipse at bottom left, rgba(236, 72, 153, 0.1) 0%, transparent 70%)',
-          }} 
-        />
-        
-        {/* Conic gradient for depth */}
-        <div 
-          className="absolute inset-0 opacity-30 blur-3xl"
-          style={{
-            background: 'conic-gradient(from 0deg, rgba(0, 212, 255, 0.05) 0%, rgba(168, 85, 247, 0.05) 33%, rgba(236, 72, 153, 0.05) 66%, rgba(0, 212, 255, 0.05) 100%)',
+        {/* Animated gradient from dark charcoal → purple/blue/teal edges */}
+        <motion.div 
+          className="absolute inset-0"
+          animate={prefersReducedMotion ? {} : {
+            background: [
+              'radial-gradient(ellipse at top left, rgba(168, 85, 247, 0.15) 0%, transparent 70%)',
+              'radial-gradient(ellipse at top right, rgba(0, 212, 255, 0.15) 0%, transparent 70%)',
+              'radial-gradient(ellipse at bottom center, rgba(14, 165, 233, 0.15) 0%, transparent 70%)',
+              'radial-gradient(ellipse at top left, rgba(168, 85, 247, 0.15) 0%, transparent 70%)',
+            ],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: 'linear',
           }}
         />
       </div>
@@ -80,17 +85,9 @@ export default function CinematicHero() {
       {/* Particle Field */}
       <ParticleField />
 
-      {/* Lens Flare Overlay */}
-      <LensFlare />
-
-      {/* Floating AI Agents */}
-      <FloatingAIAgent position="left" delay={0} icon="sparkles" color="primary" />
-      <FloatingAIAgent position="right" delay={1} icon="zap" color="secondary" />
-      <FloatingAIAgent position="left" delay={2} icon="brain" color="accent" />
-
       <Container size="xl" className="relative z-10">
         <motion.div
-          className="max-w-5xl mx-auto text-center"
+          className="max-w-6xl mx-auto text-center"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -104,43 +101,41 @@ export default function CinematicHero() {
             Ario Studio · AI Creative Lab
           </motion.div>
 
-          {/* Main Heading - Bigger and more cinematic */}
-          <motion.div
+          {/* Main Heading - Modern geometric sans, strong but not oversized */}
+          <motion.h1
             variants={itemVariants}
-            className="relative mb-8"
+            className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-bold text-text-primary leading-[1.1] tracking-[-0.02em] mb-6 max-w-4xl mx-auto"
           >
-            {/* Soft AI galaxy gradient glow behind title */}
-            <motion.div
-              className="absolute inset-0 blur-3xl -z-10"
-              style={{
-                background: 'radial-gradient(ellipse at center, rgba(0, 212, 255, 0.3) 0%, transparent 70%)',
-              }}
-              animate={prefersReducedMotion ? {} : {
-                opacity: [0.2, 0.4, 0.2],
-                scale: [1, 1.1, 1],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-            />
-            <h1 className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-display font-bold text-text-primary leading-[1.05] tracking-[-0.03em] relative z-10">
-              <span className="block">Cinematic AI websites</span>
-              <span className="block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                that feel alive.
-              </span>
-            </h1>
-          </motion.div>
+            <span className="block">Cinematic AI websites</span>
+            <span className="block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              that feel alive.
+            </span>
+          </motion.h1>
 
-          {/* Supporting Text */}
+          {/* Supporting Text - One concise subtitle */}
           <motion.p
             variants={itemVariants}
-            className="text-xl md:text-2xl lg:text-3xl text-text-secondary leading-relaxed max-w-3xl mx-auto mb-12 font-light"
+            className="text-lg md:text-xl lg:text-2xl text-text-secondary leading-relaxed max-w-2xl mx-auto mb-12 font-light"
           >
-            Motion-first, AI-focused websites for founders, SaaS, and creative brands. 
-            We craft experiences that blend cutting-edge technology with cinematic storytelling.
+            Motion-first, AI-focused websites for founders, SaaS, and creative brands.
           </motion.p>
+
+          {/* 3D Orange Card */}
+          <motion.div
+            variants={itemVariants}
+            className="mb-12"
+          >
+            <Orange3DCard>
+              <div className="text-center">
+                <h3 className="text-2xl md:text-3xl font-display font-bold text-white mb-3">
+                  AI Studio
+                </h3>
+                <p className="text-base md:text-lg text-white/90">
+                  Build teams of AI agents that work together seamlessly
+                </p>
+              </div>
+            </Orange3DCard>
+          </motion.div>
 
           {/* CTAs with micro-animations */}
           <motion.div
@@ -209,7 +204,6 @@ export default function CinematicHero() {
 
       {/* Additional ambient glows */}
       <div className="absolute bottom-0 left-0 right-0 h-96 bg-gradient-to-t from-background via-background/50 to-transparent pointer-events-none" />
-      <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-background via-background/50 to-transparent pointer-events-none" />
-    </section>
+    </motion.section>
   )
 }
