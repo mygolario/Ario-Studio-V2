@@ -1,10 +1,9 @@
 'use client'
 
 import { useRef, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { Sparkles, Code, Bot } from 'lucide-react'
 import Container from '@/components/ui/Container'
-import { gsap, ScrollTrigger } from '@/lib/gsap-setup'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
 
 interface StoryBlock {
@@ -67,122 +66,62 @@ const colorClasses = {
 export default function ScrollStorySection() {
   const sectionRef = useRef<HTMLDivElement>(null)
   const prefersReducedMotion = useReducedMotion()
-
-  useEffect(() => {
-    if (prefersReducedMotion || !sectionRef.current) return
-
-    const blockElements = sectionRef.current.querySelectorAll('.story-block')
-    const container = sectionRef.current
-
-    // Pin the section with proper end value to allow smooth scrolling
-    const pinTrigger = ScrollTrigger.create({
-      trigger: container,
-      start: 'top top',
-      end: '+=300%',
-      pin: true,
-      pinSpacing: true,
-      anticipatePin: 1,
-    })
-    
-    const scrollTriggers: ScrollTrigger[] = [pinTrigger]
-
-    // Animate each block using scroll progress
-    blockElements.forEach((block, index) => {
-      const blockElement = block as HTMLElement
-      const blockData = blocks[index]
-      const colors = colorClasses[blockData.color as keyof typeof colorClasses]
-
-      // Initial state
-      if (index === 0) {
-        gsap.set(blockElement, {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-        })
-      } else {
-        gsap.set(blockElement, {
-          opacity: 0,
-          scale: 0.92,
-          y: 100,
-        })
-      }
-
-      // Create scroll trigger for each block - simpler approach
-      const blockTrigger = ScrollTrigger.create({
-        trigger: container,
-        start: () => {
-          const viewportHeight = window.innerHeight
-          return `top top-=${index * viewportHeight}`
-        },
-        end: () => {
-          const viewportHeight = window.innerHeight
-          return `top top-=${(index + 1) * viewportHeight}`
-        },
-        onEnter: () => {
-          gsap.to(blockElement, {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-          })
-          
-          // Hide other blocks
-          blockElements.forEach((otherBlock, otherIndex) => {
-            if (otherIndex !== index) {
-              const otherElement = otherBlock as HTMLElement
-              if (otherIndex < index) {
-                gsap.set(otherElement, { opacity: 0.2, scale: 0.85, y: -50 })
-              } else {
-                gsap.set(otherElement, { opacity: 0, scale: 0.92, y: 100 })
-              }
-            }
-          })
-        },
-        onLeave: () => {
-          gsap.to(blockElement, {
-            opacity: 0.2,
-            scale: 0.85,
-            y: -50,
-            duration: 0.6,
-            ease: 'power3.out',
-          })
-        },
-        onEnterBack: () => {
-          gsap.to(blockElement, {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-          })
-        },
-      })
-      
-      scrollTriggers.push(blockTrigger)
-    })
-
-    return () => {
-      // Clean up all ScrollTriggers created in this effect
-      scrollTriggers.forEach(trigger => trigger.kill())
-    }
-  }, [prefersReducedMotion])
+  
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  })
 
   return (
-    <section ref={sectionRef} className="relative z-10" style={{ minHeight: '300vh' }}>
+    <section ref={sectionRef} className="relative py-32 md:py-40 lg:py-48">
       <Container size="xl" className="relative z-10">
-        <div className="min-h-screen flex items-center justify-center py-32" style={{ position: 'relative', zIndex: 10 }}>
+        <div className="space-y-32 md:space-y-40 lg:space-y-48">
           {blocks.map((block, index) => {
             const IconComponent = block.icon
             const colors = colorClasses[block.color as keyof typeof colorClasses]
+            
+            // Calculate opacity and scale based on scroll position
+            const blockProgress = useTransform(
+              scrollYProgress,
+              [
+                (index - 0.5) / blocks.length,
+                index / blocks.length,
+                (index + 0.5) / blocks.length,
+              ],
+              [0.3, 1, 0.3]
+            )
+            
+            const blockScale = useTransform(
+              scrollYProgress,
+              [
+                (index - 0.5) / blocks.length,
+                index / blocks.length,
+                (index + 0.5) / blocks.length,
+              ],
+              [0.9, 1, 0.9]
+            )
+            
+            const blockY = useTransform(
+              scrollYProgress,
+              [
+                (index - 0.5) / blocks.length,
+                index / blocks.length,
+                (index + 0.5) / blocks.length,
+              ],
+              [50, 0, -50]
+            )
 
             return (
               <motion.div
                 key={block.id}
-                className="story-block absolute inset-0 flex items-center justify-center"
-                initial={{ opacity: index === 0 ? 1 : 0 }}
+                className="relative"
+                style={{
+                  opacity: prefersReducedMotion ? 1 : blockProgress,
+                  scale: prefersReducedMotion ? 1 : blockScale,
+                  y: prefersReducedMotion ? 0 : blockY,
+                }}
               >
-                <div className="max-w-4xl mx-auto w-full px-4">
+                <div className="max-w-4xl mx-auto px-4">
                   {/* Floating glass/neon card */}
                   <motion.div
                     className={`
@@ -196,7 +135,6 @@ export default function ScrollStorySection() {
                       scale: 1.02,
                     }}
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                    style={{ transformStyle: 'preserve-3d' }}
                   >
                     {/* Glow effect */}
                     <motion.div
@@ -249,7 +187,7 @@ export default function ScrollStorySection() {
                           key={featureIndex}
                           initial={{ opacity: 0, scale: 0.8 }}
                           whileInView={{ opacity: 1, scale: 1 }}
-                          viewport={{ once: true }}
+                          viewport={{ once: true, margin: '-50px' }}
                           transition={{ delay: featureIndex * 0.1 }}
                           className="px-4 py-2 rounded-full text-sm md:text-base bg-surface-glass border border-border/30 text-text-secondary font-medium backdrop-blur-sm"
                         >
@@ -274,4 +212,3 @@ export default function ScrollStorySection() {
     </section>
   )
 }
-
