@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased relative`}>
-        {/* Full-screen animated gradient background - Aceternity */}
+        {/* Full-screen animated gradient background - baunov/gradients-bg */}
         <div className="fixed inset-0 -z-10">
           <BackgroundGradientAnimation
             gradientBackgroundStart="rgb(15, 15, 20)"

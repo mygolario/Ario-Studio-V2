@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 
 type BackgroundGradientAnimationProps = {
   gradientBackgroundStart?: string;
@@ -36,143 +35,81 @@ export default function BackgroundGradientAnimation({
   containerClassName,
 }: BackgroundGradientAnimationProps) {
   const interactiveRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let x = 0;
-    let y = 0;
-    let xSet = x;
-    let ySet = y;
-    const animationDuration = 15000;
-    const lastTime = 0;
+    if (!interactive || !interactiveRef.current) return;
 
-    const animate = (currentTime: number) => {
+    let curX = 0;
+    let curY = 0;
+    let tgX = 0;
+    let tgY = 0;
+
+    const move = () => {
       if (!interactiveRef.current) return;
-      if (currentTime - lastTime < 10) {
-        requestAnimationFrame(animate);
-        return;
-      }
-      xSet += (x - xSet) / 10;
-      ySet += (y - ySet) / 10;
-
-      const xPercent = (xSet / window.innerWidth) * 100;
-      const yPercent = (ySet / window.innerHeight) * 100;
-
-      interactiveRef.current.style.setProperty("--x", `${xPercent}%`);
-      interactiveRef.current.style.setProperty("--y", `${yPercent}%`);
-
-      requestAnimationFrame(animate);
+      curX += (tgX - curX) / 20;
+      curY += (tgY - curY) / 20;
+      interactiveRef.current.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
+      requestAnimationFrame(move);
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = interactiveRef.current?.getBoundingClientRect();
-      if (rect) {
-        x = e.clientX - rect.left;
-        y = e.clientY - rect.top;
-      }
+    const handleMouseMove = (event: MouseEvent) => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      tgX = event.clientX - rect.left - rect.width / 2;
+      tgY = event.clientY - rect.top - rect.height / 2;
     };
 
-    if (interactive && interactiveRef.current) {
-      interactiveRef.current.addEventListener("mousemove", handleMouseMove);
-      animate(0);
-    }
+    window.addEventListener("mousemove", handleMouseMove);
+    move();
 
     return () => {
-      if (interactive && interactiveRef.current) {
-        interactiveRef.current.removeEventListener("mousemove", handleMouseMove);
-      }
+      window.removeEventListener("mousemove", handleMouseMove);
     };
   }, [interactive]);
 
   return (
     <div
-      ref={interactiveRef}
-      className={`relative flex h-full w-full items-center justify-center overflow-hidden ${containerClassName || ""}`}
+      ref={containerRef}
+      className={`gradient-bg ${containerClassName || ""}`}
       style={
         {
-          "--gradient-background-start": gradientBackgroundStart,
-          "--gradient-background-end": gradientBackgroundEnd,
-          "--first-color": firstColor,
-          "--second-color": secondColor,
-          "--third-color": thirdColor,
-          "--fourth-color": fourthColor,
-          "--fifth-color": fifthColor,
-          "--pointer-color": pointerColor,
-          "--size": size,
-          "--blending-value": blendingValue,
+          "--color-bg1": gradientBackgroundStart,
+          "--color-bg2": gradientBackgroundEnd,
+          "--color1": firstColor,
+          "--color2": secondColor,
+          "--color3": thirdColor,
+          "--color4": fourthColor,
+          "--color5": fifthColor,
+          "--color-interactive": pointerColor,
+          "--circle-size": size,
+          "--blending": blendingValue,
         } as React.CSSProperties
       }
     >
-      <svg className="absolute inset-0 h-full w-full">
-        <rect
-          width="100%"
-          height="100%"
-          fill={`url(#gradient)`}
-        />
+      <svg xmlns="http://www.w3.org/2000/svg" style={{ position: "fixed", top: 0, left: 0, width: 0, height: 0 }}>
+        <defs>
+          <filter id="goo">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+            <feColorMatrix
+              in="blur"
+              mode="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"
+              result="goo"
+            />
+            <feBlend in="SourceGraphic" in2="goo" />
+          </filter>
+        </defs>
       </svg>
 
-      <div className="absolute inset-0 z-10">
-        <svg className="absolute inset-0 h-full w-full">
-          <defs>
-            <linearGradient id="gradient" gradientTransform="rotate(90)">
-              <stop offset="0%" stopColor={gradientBackgroundStart} />
-              <stop offset="100%" stopColor={gradientBackgroundEnd} />
-            </linearGradient>
-          </defs>
-        </svg>
+      <div className="gradients-container">
+        <div className="g1" />
+        <div className="g2" />
+        <div className="g3" />
+        <div className="g4" />
+        <div className="g5" />
+        {interactive && <div ref={interactiveRef} className="interactive" />}
       </div>
-
-      <motion.div
-        className="absolute inset-0 z-10"
-        style={{
-          background: `radial-gradient(2px 2px at ${interactive ? "var(--x)" : "50%"} ${interactive ? "var(--y)" : "50%"}, rgb(${pointerColor}), transparent 50%)`,
-        }}
-        transition={{ type: "spring", stiffness: 50, damping: 50 }}
-      />
-
-      <div
-        className="absolute inset-0 z-10"
-        style={{
-          background: `radial-gradient(${size} ${size} at ${interactive ? "var(--x)" : "50%"} ${interactive ? "var(--y)" : "50%"}, rgba(${firstColor}, 0.3), transparent 50%)`,
-          mixBlendMode: blendingValue as any,
-          animation: "moveVertical 30s ease infinite",
-        }}
-      />
-
-      <div
-        className="absolute inset-0 z-10"
-        style={{
-          background: `radial-gradient(${size} ${size} at ${interactive ? "var(--x)" : "50%"} ${interactive ? "var(--y)" : "50%"}, rgba(${secondColor}, 0.3), transparent 50%)`,
-          mixBlendMode: blendingValue as any,
-          animation: "moveInCircle 20s reverse infinite",
-        }}
-      />
-
-      <div
-        className="absolute inset-0 z-10"
-        style={{
-          background: `radial-gradient(${size} ${size} at ${interactive ? "var(--x)" : "50%"} ${interactive ? "var(--y)" : "50%"}, rgba(${thirdColor}, 0.3), transparent 50%)`,
-          mixBlendMode: blendingValue as any,
-          animation: "moveInCircle 40s linear infinite",
-        }}
-      />
-
-      <div
-        className="absolute inset-0 z-10"
-        style={{
-          background: `radial-gradient(${size} ${size} at ${interactive ? "var(--x)" : "50%"} ${interactive ? "var(--y)" : "50%"}, rgba(${fourthColor}, 0.2), transparent 50%)`,
-          mixBlendMode: blendingValue as any,
-          animation: "moveHorizontal 40s ease infinite",
-        }}
-      />
-
-      <div
-        className="absolute inset-0 z-10"
-        style={{
-          background: `radial-gradient(${size} ${size} at ${interactive ? "var(--x)" : "50%"} ${interactive ? "var(--y)" : "50%"}, rgba(${fifthColor}, 0.2), transparent 50%)`,
-          mixBlendMode: blendingValue as any,
-          animation: "moveInCircle 20s ease infinite",
-        }}
-      />
 
       {children}
     </div>
@@ -181,4 +118,3 @@ export default function BackgroundGradientAnimation({
 
 // Named export for convenience (matches Aceternity pattern)
 export { BackgroundGradientAnimation };
-
