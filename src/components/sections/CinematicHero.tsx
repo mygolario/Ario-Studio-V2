@@ -5,7 +5,6 @@ import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'fram
 import { ChevronDown } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Container from '@/components/ui/Container'
-import AnimatedGradientBackground from '@/components/shared/AnimatedGradientBackground'
 import { gsap } from '@/lib/gsap-setup'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
 
@@ -163,16 +162,14 @@ export default function CinematicHero() {
   }, [prefersReducedMotion])
 
   return (
-    <>
-      <AnimatedGradientBackground />
-      <motion.section 
-        ref={sectionRef}
-        className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-24"
-        style={{
-          opacity: prefersReducedMotion ? 1 : opacity,
-          y: prefersReducedMotion ? 0 : y,
-        }}
-      >
+    <motion.section
+      ref={sectionRef}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-24"
+      style={{
+        opacity: prefersReducedMotion ? 1 : opacity,
+        y: prefersReducedMotion ? 0 : y,
+      }}
+    >
         <Container size="xl" className="relative z-10">
           <div className="max-w-5xl mx-auto text-center">
             {/* Main Title - Two lines with stagger */}
@@ -300,6 +297,5 @@ export default function CinematicHero() {
           </motion.div>
         </motion.div>
       </motion.section>
-    </>
   )
 }

@@ -10,23 +10,28 @@ import PipelineTimeline from '@/components/sections/PipelineTimeline'
 import CTABand from '@/components/sections/CTABand'
 import Contact from '@/components/sections/Contact'
 import Footer from '@/components/sections/Footer'
+import AnimatedGradientBackground from '@/components/shared/AnimatedGradientBackground'
 import { useGSAPScrollAnimations } from '@/lib/gsap-setup'
 
 export default function Home() {
   useGSAPScrollAnimations()
 
   return (
-    <main className="relative">
-      <Navbar />
-      <CinematicHero />
-      <ScrollStorySection />
-      <AICreativeLabSection />
-      <Portfolio />
-      <FeatureCapsules />
-      <PipelineTimeline />
-      <CTABand />
-      <Contact />
-      <Footer />
-    </main>
+    <>
+      {/* Global animated gradient background */}
+      <AnimatedGradientBackground />
+      <main className="relative">
+        <Navbar />
+        <CinematicHero />
+        <ScrollStorySection />
+        <AICreativeLabSection />
+        <Portfolio />
+        <FeatureCapsules />
+        <PipelineTimeline />
+        <CTABand />
+        <Contact />
+        <Footer />
+      </main>
+    </>
   )
 }

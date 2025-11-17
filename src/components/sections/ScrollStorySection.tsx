@@ -74,13 +74,16 @@ export default function ScrollStorySection() {
     const blockElements = sectionRef.current.querySelectorAll('.story-block')
     const container = sectionRef.current
 
-    // Pin the section
+    // Pin the section with proper end value to allow smooth scrolling
+    const pinDuration = blockElements.length * window.innerHeight * 1.5
     ScrollTrigger.create({
       trigger: container,
       start: 'top top',
-      end: () => `+=${blockElements.length * window.innerHeight}`,
+      end: () => `+=${pinDuration}`,
       pin: true,
       pinSpacing: true,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
     })
 
     // Animate each block
@@ -107,8 +110,8 @@ export default function ScrollStorySection() {
       // Enter animation
       ScrollTrigger.create({
         trigger: container,
-        start: `top top-=${index * window.innerHeight}`,
-        end: `top top-=${(index + 1) * window.innerHeight}`,
+        start: `top top-=${index * window.innerHeight * 1.5}`,
+        end: `top top-=${(index + 1) * window.innerHeight * 1.5}`,
         onEnter: () => {
           // Activate current block
           gsap.to(blockElement, {

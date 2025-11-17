@@ -13,9 +13,16 @@
   }
 
   body {
-    @apply bg-background text-text-primary;
+    @apply text-text-primary;
     min-height: 100vh;
     font-feature-settings: 'rlig' 1, 'calt' 1;
+    background: transparent;
+    overflow-x: hidden;
+  }
+  
+  html {
+    background: transparent;
+    overflow-x: hidden;
   }
 
   /* Global typography - Apple/RelevanceAI style */

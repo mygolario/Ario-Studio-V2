@@ -64,9 +64,9 @@ export default function AnimatedGradientBackground() {
       const g1 = Math.floor(c1.g + (c2.g - c1.g) * t)
       const b1 = Math.floor(c1.b + (c2.b - c1.b) * t)
 
-      gradient1.addColorStop(0, `rgba(${r1}, ${g1}, ${b1}, 0.2)`)
-      gradient1.addColorStop(0.5, `rgba(${Math.floor(r1 * 0.8)}, ${Math.floor(g1 * 0.8)}, ${Math.floor(b1 * 0.8)}, 0.15)`)
-      gradient1.addColorStop(1, `rgba(${r1}, ${g1}, ${b1}, 0.1)`)
+      gradient1.addColorStop(0, `rgba(${r1}, ${g1}, ${b1}, 0.25)`)
+      gradient1.addColorStop(0.5, `rgba(${Math.floor(r1 * 0.8)}, ${Math.floor(g1 * 0.8)}, ${Math.floor(b1 * 0.8)}, 0.2)`)
+      gradient1.addColorStop(1, `rgba(${r1}, ${g1}, ${b1}, 0.15)`)
 
       ctx.fillStyle = gradient1
       ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -87,7 +87,7 @@ export default function AnimatedGradientBackground() {
       const g2 = Math.floor(c2.g + (c3.g - c2.g) * t)
       const b2 = Math.floor(c2.b + (c3.b - c2.b) * t)
 
-      gradient2.addColorStop(0, `rgba(${r2}, ${g2}, ${b2}, 0.15)`)
+      gradient2.addColorStop(0, `rgba(${r2}, ${g2}, ${b2}, 0.2)`)
       gradient2.addColorStop(1, 'transparent')
 
       ctx.fillStyle = gradient2
@@ -185,9 +185,12 @@ export default function AnimatedGradientBackground() {
 
   return (
     <>
+      {/* Base dark background with gradient overlay */}
+      <div className="fixed inset-0 -z-20 bg-gradient-to-b from-[#0a0a0f] via-[#0f0f15] to-[#0a0a0f]" />
+      
       <motion.canvas
         ref={canvasRef}
-        className="fixed inset-0 -z-10 opacity-50"
+        className="fixed inset-0 -z-10 opacity-60"
         style={{
           y: parallaxY,
         }}
@@ -197,8 +200,12 @@ export default function AnimatedGradientBackground() {
         ref={particlesRef}
         className="fixed inset-0 -z-10 pointer-events-none"
       />
-      {/* Overlay for depth */}
-      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-background via-background/98 to-background pointer-events-none" />
+      {/* Subtle overlay to ensure text readability */}
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-transparent via-transparent to-transparent pointer-events-none opacity-30" 
+        style={{
+          background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.2) 100%)',
+        }}
+      />
     </>
   )
 }
