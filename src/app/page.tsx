@@ -4,9 +4,9 @@ import Navbar from '@/components/layout/Navbar'
 import CinematicHero from '@/components/sections/CinematicHero'
 import ScrollStory from '@/components/sections/ScrollStory'
 import Portfolio from '@/components/sections/Portfolio'
-import Services from '@/components/sections/Services'
+import FeatureCapsules from '@/components/sections/FeatureCapsules'
 import About from '@/components/sections/About'
-import Process from '@/components/sections/Process'
+import PipelineTimeline from '@/components/sections/PipelineTimeline'
 import CTABand from '@/components/sections/CTABand'
 import Contact from '@/components/sections/Contact'
 import Footer from '@/components/sections/Footer'
@@ -21,9 +21,9 @@ export default function Home() {
       <CinematicHero />
       <ScrollStory />
       <Portfolio />
-      <Services />
+      <FeatureCapsules />
       <About />
-      <Process />
+      <PipelineTimeline />
       <CTABand />
       <Contact />
       <Footer />

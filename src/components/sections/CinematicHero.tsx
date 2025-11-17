@@ -1,11 +1,13 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Play } from 'lucide-react'
+import { Play, ArrowRight } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Container from '@/components/ui/Container'
 import LensFlare from '@/components/shared/LensFlare'
 import FloatingAIAgent from '@/components/shared/FloatingAIAgent'
+import ParticleField from '@/components/shared/ParticleField'
+import NebulaBackground from '@/components/shared/NebulaBackground'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
 
 export default function CinematicHero() {
@@ -47,19 +49,19 @@ export default function CinematicHero() {
         <div 
           className="absolute inset-0 opacity-60" 
           style={{ 
-            background: 'radial-gradient(ellipse at top center, rgba(0, 212, 255, 0.1) 0%, transparent 70%)',
+            background: 'radial-gradient(ellipse at top center, rgba(0, 212, 255, 0.15) 0%, transparent 70%)',
           }} 
         />
         <div 
           className="absolute inset-0 opacity-50"
           style={{ 
-            background: 'radial-gradient(ellipse at bottom right, rgba(168, 85, 247, 0.08) 0%, transparent 70%)',
+            background: 'radial-gradient(ellipse at bottom right, rgba(168, 85, 247, 0.12) 0%, transparent 70%)',
           }} 
         />
         <div 
           className="absolute inset-0 opacity-40"
           style={{ 
-            background: 'radial-gradient(ellipse at bottom left, rgba(236, 72, 153, 0.06) 0%, transparent 70%)',
+            background: 'radial-gradient(ellipse at bottom left, rgba(236, 72, 153, 0.1) 0%, transparent 70%)',
           }} 
         />
         
@@ -72,6 +74,12 @@ export default function CinematicHero() {
         />
       </div>
 
+      {/* Nebula Background */}
+      <NebulaBackground />
+
+      {/* Particle Field */}
+      <ParticleField />
+
       {/* Lens Flare Overlay */}
       <LensFlare />
 
@@ -82,7 +90,7 @@ export default function CinematicHero() {
 
       <Container size="xl" className="relative z-10">
         <motion.div
-          className="max-w-4xl mx-auto text-center lg:text-left"
+          className="max-w-5xl mx-auto text-center"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -96,46 +104,101 @@ export default function CinematicHero() {
             Ario Studio · AI Creative Lab
           </motion.div>
 
-          {/* Main Heading */}
-          <motion.h1
+          {/* Main Heading - Bigger and more cinematic */}
+          <motion.div
             variants={itemVariants}
-            className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-bold text-text-primary leading-[1.1] tracking-[-0.02em] mb-6"
+            className="relative mb-8"
           >
-            Cinematic AI websites{' '}
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              that feel alive.
-            </span>
-          </motion.h1>
+            {/* Soft AI galaxy gradient glow behind title */}
+            <motion.div
+              className="absolute inset-0 blur-3xl -z-10"
+              style={{
+                background: 'radial-gradient(ellipse at center, rgba(0, 212, 255, 0.3) 0%, transparent 70%)',
+              }}
+              animate={prefersReducedMotion ? {} : {
+                opacity: [0.2, 0.4, 0.2],
+                scale: [1, 1.1, 1],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            />
+            <h1 className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-display font-bold text-text-primary leading-[1.05] tracking-[-0.03em] relative z-10">
+              <span className="block">Cinematic AI websites</span>
+              <span className="block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                that feel alive.
+              </span>
+            </h1>
+          </motion.div>
 
           {/* Supporting Text */}
           <motion.p
             variants={itemVariants}
-            className="text-lg md:text-xl lg:text-2xl text-text-secondary leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-10 font-light"
+            className="text-xl md:text-2xl lg:text-3xl text-text-secondary leading-relaxed max-w-3xl mx-auto mb-12 font-light"
           >
             Motion-first, AI-focused websites for founders, SaaS, and creative brands. 
             We craft experiences that blend cutting-edge technology with cinematic storytelling.
           </motion.p>
 
-          {/* CTAs */}
+          {/* CTAs with micro-animations */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             <motion.div
-              whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
+              whileHover={prefersReducedMotion ? {} : { 
+                scale: 1.05,
+                y: -2,
+              }}
               whileTap={{ scale: 0.95 }}
+              className="relative group"
             >
-              <Button variant="primary" size="lg" className="text-base md:text-lg px-8 py-4">
-                Start a project
+              <Button variant="primary" size="lg" className="text-base md:text-lg px-8 py-4 relative overflow-hidden">
+                <span className="relative z-10 flex items-center gap-2">
+                  Start a project
+                  <motion.span
+                    animate={prefersReducedMotion ? {} : {
+                      x: [0, 4, 0],
+                    }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                  >
+                    <ArrowRight className="w-4 h-4" />
+                  </motion.span>
+                </span>
+                {/* Hover glow effect */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-accent opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                  initial={false}
+                />
               </Button>
             </motion.div>
             <motion.div
-              whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
+              whileHover={prefersReducedMotion ? {} : { 
+                scale: 1.05,
+                y: -2,
+              }}
               whileTap={{ scale: 0.95 }}
             >
               <Button variant="secondary" size="lg" className="text-base md:text-lg px-8 py-4 group">
                 <span className="flex items-center gap-2">
-                  <Play className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  <motion.span
+                    animate={prefersReducedMotion ? {} : {
+                      scale: [1, 1.1, 1],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                  >
+                    <Play className="w-4 h-4" />
+                  </motion.span>
                   Watch showreel
                 </span>
               </Button>
@@ -150,4 +213,3 @@ export default function CinematicHero() {
     </section>
   )
 }
-
