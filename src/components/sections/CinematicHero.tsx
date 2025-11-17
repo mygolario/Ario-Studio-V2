@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react'
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Sparkles } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Container from '@/components/ui/Container'
 import { gsap } from '@/lib/gsap-setup'
@@ -272,42 +272,185 @@ export default function CinematicHero() {
                 
                 {/* Content */}
                 <div className="relative z-10 text-center">
-                  {/* Icon/Logo area */}
+                  {/* Premium Icon/Logo area */}
                   <motion.div
                     className="mb-6 flex justify-center"
                     animate={prefersReducedMotion ? {} : {
-                      rotate: [0, 360],
+                      y: [0, -4, 0],
                     }}
                     transition={{
-                      duration: 20,
+                      duration: 4,
                       repeat: Infinity,
-                      ease: 'linear',
+                      ease: 'easeInOut',
                     }}
                   >
                     <div className="relative">
-                      {/* Outer ring */}
+                      {/* Outer glowing ring - multiple layers */}
                       <motion.div
-                        className="absolute inset-0 rounded-full border-2 border-primary/40"
-                        style={{ width: '80px', height: '80px' }}
+                        className="absolute inset-0 rounded-full"
+                        style={{
+                          width: '100px',
+                          height: '100px',
+                          left: '50%',
+                          top: '50%',
+                          transform: 'translate(-50%, -50%)',
+                        }}
                         animate={prefersReducedMotion ? {} : {
-                          scale: [1, 1.2, 1],
-                          opacity: [0.5, 0.8, 0.5],
+                          scale: [1, 1.3, 1],
+                          opacity: [0.4, 0.7, 0.4],
+                          rotate: [0, 360],
                         }}
                         transition={{
-                          duration: 3,
+                          scale: {
+                            duration: 3,
+                            repeat: Infinity,
+                            ease: 'easeInOut',
+                          },
+                          opacity: {
+                            duration: 3,
+                            repeat: Infinity,
+                            ease: 'easeInOut',
+                          },
+                          rotate: {
+                            duration: 15,
+                            repeat: Infinity,
+                            ease: 'linear',
+                          },
+                        }}
+                      >
+                        <div
+                          className="absolute inset-0 rounded-full border-2"
+                          style={{
+                            borderImage: 'linear-gradient(135deg, rgba(0, 212, 255, 0.6), rgba(168, 85, 247, 0.6), rgba(236, 72, 153, 0.6)) 1',
+                            borderImageSlice: 1,
+                            boxShadow: '0 0 40px rgba(0, 212, 255, 0.4), 0 0 60px rgba(168, 85, 247, 0.3)',
+                          }}
+                        />
+                      </motion.div>
+
+                      {/* Middle ring with glow */}
+                      <motion.div
+                        className="absolute inset-0 rounded-full"
+                        style={{
+                          width: '85px',
+                          height: '85px',
+                          left: '50%',
+                          top: '50%',
+                          transform: 'translate(-50%, -50%)',
+                        }}
+                        animate={prefersReducedMotion ? {} : {
+                          rotate: [0, -360],
+                        }}
+                        transition={{
+                          duration: 12,
+                          repeat: Infinity,
+                          ease: 'linear',
+                        }}
+                      >
+                        <div
+                          className="absolute inset-0 rounded-full border border-primary/50"
+                          style={{
+                            boxShadow: '0 0 30px rgba(0, 212, 255, 0.5), inset 0 0 20px rgba(168, 85, 247, 0.2)',
+                          }}
+                        />
+                      </motion.div>
+
+                      {/* Inner core with icon */}
+                      <motion.div
+                        className="relative w-20 h-20 rounded-full flex items-center justify-center"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(0, 212, 255, 0.25), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.25))',
+                          backdropFilter: 'blur(20px)',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          boxShadow: `
+                            0 0 50px rgba(0, 212, 255, 0.5),
+                            0 0 80px rgba(168, 85, 247, 0.4),
+                            inset 0 2px 4px rgba(255, 255, 255, 0.3),
+                            inset 0 -2px 4px rgba(0, 0, 0, 0.3)
+                          `,
+                        }}
+                        animate={prefersReducedMotion ? {} : {
+                          scale: [1, 1.05, 1],
+                        }}
+                        transition={{
+                          duration: 2.5,
                           repeat: Infinity,
                           ease: 'easeInOut',
                         }}
-                      />
-                      {/* Inner core */}
-                      <div
-                        className="relative w-16 h-16 rounded-full bg-gradient-to-br from-primary/40 via-secondary/30 to-accent/40 backdrop-blur-sm border border-primary/30 flex items-center justify-center"
-                        style={{
-                          boxShadow: '0 0 30px rgba(168, 85, 247, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-                        }}
                       >
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary" />
-                      </div>
+                        {/* Icon */}
+                        <motion.div
+                          animate={prefersReducedMotion ? {} : {
+                            rotate: [0, 360],
+                            scale: [1, 1.1, 1],
+                          }}
+                          transition={{
+                            rotate: {
+                              duration: 8,
+                              repeat: Infinity,
+                              ease: 'linear',
+                            },
+                            scale: {
+                              duration: 2,
+                              repeat: Infinity,
+                              ease: 'easeInOut',
+                            },
+                          }}
+                        >
+                          <Sparkles
+                            className="w-10 h-10 text-primary"
+                            style={{
+                              filter: 'drop-shadow(0 0 8px rgba(0, 212, 255, 0.8))',
+                            }}
+                            strokeWidth={1.5}
+                          />
+                        </motion.div>
+
+                        {/* Inner glow pulse */}
+                        <motion.div
+                          className="absolute inset-0 rounded-full"
+                          style={{
+                            background: 'radial-gradient(circle, rgba(0, 212, 255, 0.4), transparent 70%)',
+                          }}
+                          animate={prefersReducedMotion ? {} : {
+                            opacity: [0.3, 0.7, 0.3],
+                            scale: [1, 1.2, 1],
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            ease: 'easeInOut',
+                          }}
+                        />
+                      </motion.div>
+
+                      {/* Outer energy trails */}
+                      {[...Array(3)].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          className="absolute rounded-full"
+                          style={{
+                            width: `${100 + i * 20}px`,
+                            height: `${100 + i * 20}px`,
+                            left: '50%',
+                            top: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            border: `1px solid rgba(0, 212, 255, ${0.2 - i * 0.05})`,
+                            opacity: 0.3,
+                          }}
+                          animate={prefersReducedMotion ? {} : {
+                            scale: [1, 1.4, 1],
+                            opacity: [0.2, 0.5, 0.2],
+                            rotate: [0, i % 2 === 0 ? 360 : -360],
+                          }}
+                          transition={{
+                            duration: 4 + i * 0.5,
+                            repeat: Infinity,
+                            ease: 'easeInOut',
+                            delay: i * 0.3,
+                          }}
+                        />
+                      ))}
                     </div>
                   </motion.div>
 
