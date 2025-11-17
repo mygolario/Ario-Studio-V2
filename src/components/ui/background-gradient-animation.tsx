@@ -44,17 +44,19 @@ export default function BackgroundGradientAnimation({
     let curY = 0;
     let tgX = 0;
     let tgY = 0;
+    let animationFrameId: number | null = null;
+    let isActive = true;
 
     const move = () => {
-      if (!interactiveRef.current) return;
+      if (!isActive || !interactiveRef.current) return;
       curX += (tgX - curX) / 20;
       curY += (tgY - curY) / 20;
       interactiveRef.current.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
-      requestAnimationFrame(move);
+      animationFrameId = requestAnimationFrame(move);
     };
 
     const handleMouseMove = (event: MouseEvent) => {
-      if (!containerRef.current) return;
+      if (!containerRef.current || !isActive) return;
       const rect = containerRef.current.getBoundingClientRect();
       tgX = event.clientX - rect.left - rect.width / 2;
       tgY = event.clientY - rect.top - rect.height / 2;
@@ -64,6 +66,10 @@ export default function BackgroundGradientAnimation({
     move();
 
     return () => {
+      isActive = false;
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+      }
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, [interactive]);
