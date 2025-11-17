@@ -75,12 +75,13 @@ export default function ScrollStorySection() {
     const container = sectionRef.current
 
     // Pin the section with proper end value to allow smooth scrolling
-    const pinDuration = blockElements.length * window.innerHeight * 1.5
+    // Use fixed percentage for consistent behavior
     const pinTrigger = ScrollTrigger.create({
       trigger: container,
       start: 'top top',
-      end: () => `+=${pinDuration}`,
+      end: '+=250%',
       pin: true,
+      scrub: 1,
       pinSpacing: true,
       anticipatePin: 1,
       invalidateOnRefresh: true,
@@ -109,11 +110,23 @@ export default function ScrollStorySection() {
         })
       }
 
-      // Enter animation (optimized with shorter durations)
+      // Enter animation using scroll progress within pinned section
+      // Each block gets 1/3 of the 250% scroll distance
+      const scrollProgress = index / blockElements.length
+      const nextScrollProgress = (index + 1) / blockElements.length
+      
       const blockTrigger = ScrollTrigger.create({
         trigger: container,
-        start: `top top-=${index * window.innerHeight * 1.5}`,
-        end: `top top-=${(index + 1) * window.innerHeight * 1.5}`,
+        start: () => {
+          // Calculate start position: 0%, 33%, 66% of the 250% scroll
+          const viewportHeight = window.innerHeight
+          return `top top-=${scrollProgress * viewportHeight * 2.5}`
+        },
+        end: () => {
+          // Calculate end position: 33%, 66%, 100% of the 250% scroll
+          const viewportHeight = window.innerHeight
+          return `top top-=${nextScrollProgress * viewportHeight * 2.5}`
+        },
         onEnter: () => {
           // Activate current block
           gsap.to(blockElement, {
@@ -178,7 +191,7 @@ export default function ScrollStorySection() {
   }, [prefersReducedMotion])
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden">
+    <section ref={sectionRef} className="relative" style={{ minHeight: '200vh' }}>
       <Container size="xl" className="relative z-10">
         <div className="min-h-screen flex items-center justify-center py-32">
           {blocks.map((block, index) => {

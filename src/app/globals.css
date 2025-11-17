@@ -17,6 +17,7 @@
     min-height: 100vh;
     font-feature-settings: 'rlig' 1, 'calt' 1;
     background: transparent;
+    overflow-y: auto;
     overflow-x: hidden;
     /* Performance optimizations */
     transform: translateZ(0);
@@ -26,6 +27,7 @@
   
   html {
     background: transparent;
+    overflow-y: auto;
     overflow-x: hidden;
     /* Performance optimizations */
     transform: translateZ(0);
