@@ -7,7 +7,6 @@ import AICreativeLabSection from '@/components/sections/AICreativeLabSection'
 import Portfolio from '@/components/sections/Portfolio'
 import FeatureCapsules from '@/components/sections/FeatureCapsules'
 import PipelineTimeline from '@/components/sections/PipelineTimeline'
-import CTABand from '@/components/sections/CTABand'
 import Contact from '@/components/sections/Contact'
 import Footer from '@/components/sections/Footer'
 import { useGSAPScrollAnimations } from '@/lib/gsap-setup'
@@ -24,7 +23,6 @@ export default function Home() {
       <Portfolio />
       <FeatureCapsules />
       <PipelineTimeline />
-      <CTABand />
       <Contact />
       <Footer />
     </main>
