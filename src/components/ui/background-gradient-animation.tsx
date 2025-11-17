@@ -115,6 +115,3 @@ export default function BackgroundGradientAnimation({
     </div>
   );
 }
-
-// Named export for convenience (matches Aceternity pattern)
-export { BackgroundGradientAnimation };

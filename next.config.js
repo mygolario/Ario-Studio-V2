@@ -11,12 +11,22 @@ const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   
+  // Build optimizations
+  swcMinify: true,
+  
   // SVG support
-  webpack(config) {
+  webpack(config, { isServer }) {
     config.module.rules.push({
       test: /\.svg$/,
       use: ['@svgr/webpack'],
     })
+    
+    // Optimize GSAP for server-side builds
+    if (isServer) {
+      config.externals = config.externals || []
+      config.externals.push('gsap')
+    }
+    
     return config
   },
 }

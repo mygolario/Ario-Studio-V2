@@ -75,21 +75,18 @@ export default function ScrollStorySection() {
     const container = sectionRef.current
 
     // Pin the section with proper end value to allow smooth scrolling
-    // Use fixed percentage for consistent behavior
     const pinTrigger = ScrollTrigger.create({
       trigger: container,
       start: 'top top',
-      end: '+=250%',
+      end: '+=300%',
       pin: true,
-      scrub: 1,
       pinSpacing: true,
       anticipatePin: 1,
-      invalidateOnRefresh: true,
     })
     
     const scrollTriggers: ScrollTrigger[] = [pinTrigger]
 
-    // Animate each block
+    // Animate each block using scroll progress
     blockElements.forEach((block, index) => {
       const blockElement = block as HTMLElement
       const blockData = blocks[index]
@@ -110,25 +107,18 @@ export default function ScrollStorySection() {
         })
       }
 
-      // Enter animation using scroll progress within pinned section
-      // Each block gets 1/3 of the 250% scroll distance
-      const scrollProgress = index / blockElements.length
-      const nextScrollProgress = (index + 1) / blockElements.length
-      
+      // Create scroll trigger for each block - simpler approach
       const blockTrigger = ScrollTrigger.create({
         trigger: container,
         start: () => {
-          // Calculate start position: 0%, 33%, 66% of the 250% scroll
           const viewportHeight = window.innerHeight
-          return `top top-=${scrollProgress * viewportHeight * 2.5}`
+          return `top top-=${index * viewportHeight}`
         },
         end: () => {
-          // Calculate end position: 33%, 66%, 100% of the 250% scroll
           const viewportHeight = window.innerHeight
-          return `top top-=${nextScrollProgress * viewportHeight * 2.5}`
+          return `top top-=${(index + 1) * viewportHeight}`
         },
         onEnter: () => {
-          // Activate current block
           gsap.to(blockElement, {
             opacity: 1,
             scale: 1,
@@ -136,31 +126,20 @@ export default function ScrollStorySection() {
             duration: 0.8,
             ease: 'power3.out',
           })
-
-          // Deactivate previous block
-          if (index > 0) {
-            const prevBlock = blockElements[index - 1] as HTMLElement
-            gsap.to(prevBlock, {
-              opacity: 0.2,
-              scale: 0.85,
-              y: -50,
-              duration: 0.6,
-              ease: 'power3.out',
-            })
-          }
-
-          // Deactivate next block
-          if (index < blockElements.length - 1) {
-            const nextBlock = blockElements[index + 1] as HTMLElement
-            gsap.set(nextBlock, {
-              opacity: 0,
-              scale: 0.92,
-              y: 100,
-            })
-          }
+          
+          // Hide other blocks
+          blockElements.forEach((otherBlock, otherIndex) => {
+            if (otherIndex !== index) {
+              const otherElement = otherBlock as HTMLElement
+              if (otherIndex < index) {
+                gsap.set(otherElement, { opacity: 0.2, scale: 0.85, y: -50 })
+              } else {
+                gsap.set(otherElement, { opacity: 0, scale: 0.92, y: 100 })
+              }
+            }
+          })
         },
         onLeave: () => {
-          // Shrink and fade out current block
           gsap.to(blockElement, {
             opacity: 0.2,
             scale: 0.85,
@@ -170,7 +149,6 @@ export default function ScrollStorySection() {
           })
         },
         onEnterBack: () => {
-          // Restore current block
           gsap.to(blockElement, {
             opacity: 1,
             scale: 1,
@@ -191,9 +169,9 @@ export default function ScrollStorySection() {
   }, [prefersReducedMotion])
 
   return (
-    <section ref={sectionRef} className="relative" style={{ minHeight: '200vh' }}>
+    <section ref={sectionRef} className="relative z-10" style={{ minHeight: '300vh' }}>
       <Container size="xl" className="relative z-10">
-        <div className="min-h-screen flex items-center justify-center py-32">
+        <div className="min-h-screen flex items-center justify-center py-32" style={{ position: 'relative', zIndex: 10 }}>
           {blocks.map((block, index) => {
             const IconComponent = block.icon
             const colors = colorClasses[block.color as keyof typeof colorClasses]
