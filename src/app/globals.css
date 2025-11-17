@@ -18,6 +18,19 @@
     font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 
+  /* Global typography - Apple/RelevanceAI style */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  /* Soft gradient on main titles */
+  .gradient-title {
+    @apply bg-gradient-to-b from-primary via-secondary to-accent bg-clip-text text-transparent;
+  }
+
   html {
     scroll-behavior: smooth;
   }

@@ -2,7 +2,7 @@
 
 import Navbar from '@/components/layout/Navbar'
 import CinematicHero from '@/components/sections/CinematicHero'
-import Service3DPanels from '@/components/sections/Service3DPanels'
+import WhatWeDoStorySection from '@/components/sections/WhatWeDoStorySection'
 import Portfolio from '@/components/sections/Portfolio'
 import FeatureCapsules from '@/components/sections/FeatureCapsules'
 import About from '@/components/sections/About'
@@ -19,7 +19,7 @@ export default function Home() {
     <main className="relative">
       <Navbar />
       <CinematicHero />
-      <Service3DPanels />
+      <WhatWeDoStorySection />
       <Portfolio />
       <FeatureCapsules />
       <About />

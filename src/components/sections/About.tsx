@@ -1,41 +1,46 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Sparkles, Zap, Code, Rocket } from 'lucide-react'
 import Container from '@/components/ui/Container'
-import { gsap } from '@/lib/gsap-setup'
+import { gsap, ScrollTrigger } from '@/lib/gsap-setup'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
 
-interface Feature {
+interface Module {
+  id: string
   title: string
   description: string
   icon: React.ComponentType<any>
   color: string
 }
 
-const features: Feature[] = [
+const modules: Module[] = [
   {
+    id: 'cinematic',
     title: 'Cinematic Web Experiences',
-    description: 'Scroll-based storytelling and interactive narratives',
+    description: 'Scroll-based narratives, alive interfaces, and emotional motion design.',
     icon: Sparkles,
     color: 'primary',
   },
   {
+    id: 'ai',
     title: 'AI-Powered Workflows',
-    description: 'Intelligent automation and agent systems',
+    description: 'Intelligent agent systems that automate your operations.',
     icon: Zap,
     color: 'secondary',
   },
   {
+    id: 'stack',
     title: 'Next.js & Modern Stack',
-    description: 'Production-ready, scalable architecture',
+    description: 'Production-ready engineering for scale and performance.',
     icon: Code,
     color: 'accent',
   },
   {
+    id: 'delivery',
     title: 'End-to-End Delivery',
-    description: 'From concept to launch and beyond',
+    description: 'From concept to launch — with ongoing optimization.',
     icon: Rocket,
     color: 'primary',
   },
@@ -43,48 +48,48 @@ const features: Feature[] = [
 
 const colorClasses = {
   primary: {
-    border: 'border-primary/30',
-    bg: 'from-primary/10 via-primary/5 to-transparent',
+    border: 'border-primary/40',
+    bg: 'from-primary/20 via-primary/10 to-transparent',
     icon: 'text-primary',
-    glow: 'shadow-neon-blue',
+    glow: 'rgba(0, 212, 255, 0.3)',
   },
   secondary: {
-    border: 'border-secondary/30',
-    bg: 'from-secondary/10 via-secondary/5 to-transparent',
+    border: 'border-secondary/40',
+    bg: 'from-secondary/20 via-secondary/10 to-transparent',
     icon: 'text-secondary',
-    glow: 'shadow-neon-purple',
+    glow: 'rgba(168, 85, 247, 0.3)',
   },
   accent: {
-    border: 'border-accent/30',
-    bg: 'from-accent/10 via-accent/5 to-transparent',
+    border: 'border-accent/40',
+    bg: 'from-accent/20 via-accent/10 to-transparent',
     icon: 'text-accent',
-    glow: 'shadow-neon-pink',
+    glow: 'rgba(236, 72, 153, 0.3)',
   },
 }
 
 export default function About() {
+  const sectionRef = useRef<HTMLDivElement>(null)
   const leftRef = useRef<HTMLDivElement>(null)
-  const rightRef = useRef<HTMLDivElement>(null)
   const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
     if (prefersReducedMotion) return
 
-    // Fade in from blur for left side
+    // Fade in left side from blur
     if (leftRef.current) {
       gsap.fromTo(
         leftRef.current,
         {
           opacity: 0,
           filter: 'blur(20px)',
-          y: 30,
+          x: -50,
         },
         {
           opacity: 1,
           filter: 'blur(0px)',
-          y: 0,
+          x: 0,
           duration: 1.2,
-          ease: 'power3.out',
+          ease: 'power4.out',
           scrollTrigger: {
             trigger: leftRef.current,
             start: 'top 80%',
@@ -94,49 +99,71 @@ export default function About() {
       )
     }
 
-    // Stagger animation for right side modules
-    if (rightRef.current) {
-      const modules = rightRef.current.querySelectorAll('.feature-module')
+    // Animate modules one at a time
+    if (sectionRef.current) {
+      const moduleElements = sectionRef.current.querySelectorAll('.about-module')
       
-      gsap.fromTo(
-        modules,
-        {
-          opacity: 0,
-          y: 50,
-          scale: 0.9,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          ease: 'power3.out',
-          stagger: 0.15,
-          scrollTrigger: {
-            trigger: rightRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none reverse',
+      moduleElements.forEach((module, index) => {
+        gsap.fromTo(
+          module,
+          {
+            opacity: 0,
+            y: 60,
+            scale: 0.9,
+            rotateX: 20,
           },
-        }
-      )
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            rotateX: 0,
+            duration: 0.8,
+            ease: 'power4.out',
+            scrollTrigger: {
+              trigger: module,
+              start: 'top 85%',
+              toggleActions: 'play none none reverse',
+            },
+            delay: index * 0.15,
+          }
+        )
+
+        // Rotate and glow on scroll
+        const moduleElement = module as HTMLElement
+        ScrollTrigger.create({
+          trigger: moduleElement,
+          start: 'top 70%',
+          end: 'top 30%',
+          onEnter: () => {
+            gsap.to(moduleElement, {
+              rotateY: 5,
+              scale: 1.02,
+              duration: 0.5,
+              ease: 'power2.out',
+            })
+          },
+          onLeave: () => {
+            gsap.to(moduleElement, {
+              rotateY: 0,
+              scale: 1,
+              duration: 0.5,
+              ease: 'power2.out',
+            })
+          },
+        })
+      })
     }
   }, [prefersReducedMotion])
 
   return (
-    <section id="about" className="relative py-24 md:py-32 lg:py-40 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0">
-        <div 
-          className="absolute inset-0 opacity-20"
-          style={{
-            background: 'radial-gradient(ellipse at center, rgba(236, 72, 153, 0.1) 0%, transparent 70%)',
-          }}
-        />
-      </div>
-
+    <section 
+      id="about" 
+      ref={sectionRef}
+      className="relative py-24 md:py-32 lg:py-40 overflow-hidden"
+    >
       <Container size="xl" className="relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-start">
-          {/* Left: Main Title + Paragraph */}
+          {/* Left: Large title + cinematic paragraph */}
           <div ref={leftRef} className="space-y-8">
             <motion.div
               initial={{ opacity: 0 }}
@@ -160,29 +187,31 @@ export default function About() {
             </motion.div>
           </div>
 
-          {/* Right: Floating Feature Modules */}
-          <div ref={rightRef} className="space-y-6">
-            {features.map((feature, index) => {
-              const IconComponent = feature.icon
-              const colors = colorClasses[feature.color as keyof typeof colorClasses]
+          {/* Right: Animated floating modules */}
+          <div className="space-y-6">
+            {modules.map((module, index) => {
+              const IconComponent = module.icon
+              const colors = colorClasses[module.color as keyof typeof colorClasses]
 
               return (
                 <motion.div
-                  key={index}
-                  className="feature-module group"
+                  key={module.id}
+                  className="about-module group"
+                  data-glow={colors.glow}
                   whileHover={prefersReducedMotion ? {} : {
                     y: -4,
                     scale: 1.02,
                   }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  style={{ transformStyle: 'preserve-3d' }}
                 >
-                  {/* Rounded neon-pill card */}
+                  {/* Glowing pill/card */}
                   <div className={`
                     relative glass-premium rounded-2xl p-6
                     border ${colors.border}
                     bg-gradient-to-br ${colors.bg}
+                    backdrop-blur-xl
                     transition-all duration-500
-                    group-hover:${colors.glow}
                   `}>
                     {/* Glow on hover */}
                     <motion.div
@@ -192,46 +221,38 @@ export default function About() {
                     />
 
                     <div className="relative z-10 flex items-start gap-4">
-                      {/* Icon with morphing animation */}
+                      {/* Icon */}
                       <motion.div
                         className={`
-                          flex-shrink-0 w-14 h-14 rounded-xl 
+                          flex-shrink-0 w-14 h-14 rounded-xl
                           ${colors.bg} border ${colors.border}
                           flex items-center justify-center
                           backdrop-blur-sm
                         `}
-                        whileHover={prefersReducedMotion ? {} : {
-                          rotate: [0, 10, -10, 0],
+                        animate={prefersReducedMotion ? {} : {
+                          rotate: [0, 5, -5, 0],
                           scale: [1, 1.1, 1],
                         }}
-                        transition={{ duration: 0.5 }}
+                        transition={{
+                          duration: 3,
+                          repeat: Infinity,
+                          ease: 'easeInOut',
+                          delay: index * 0.4,
+                        }}
                       >
                         <IconComponent 
                           className={`w-7 h-7 ${colors.icon}`}
                           strokeWidth={1.5}
-                        />
-                        {/* Icon glow */}
-                        <motion.div
-                          className={`absolute inset-0 rounded-xl ${colors.bg} blur-md`}
-                          animate={prefersReducedMotion ? {} : {
-                            opacity: [0.3, 0.6, 0.3],
-                          }}
-                          transition={{
-                            duration: 2,
-                            repeat: Infinity,
-                            ease: 'easeInOut',
-                            delay: index * 0.3,
-                          }}
                         />
                       </motion.div>
 
                       {/* Content */}
                       <div className="flex-1">
                         <h3 className="text-xl md:text-2xl font-display font-bold text-text-primary mb-2">
-                          {feature.title}
+                          {module.title}
                         </h3>
                         <p className="text-sm md:text-base text-text-secondary leading-relaxed">
-                          {feature.description}
+                          {module.description}
                         </p>
                       </div>
                     </div>
