@@ -179,3 +179,6 @@ export default function BackgroundGradientAnimation({
   );
 }
 
+// Named export for convenience (matches Aceternity pattern)
+export { BackgroundGradientAnimation };
+
