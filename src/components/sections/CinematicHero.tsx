@@ -185,61 +185,218 @@ export default function CinematicHero() {
               Motion-first, AI-focused websites for founders, SaaS, and creative brands.
             </p>
 
-            {/* 3D Floating Card */}
+            {/* Advanced 3D Morphing Shape */}
             <motion.div
               ref={cardRef}
-              className="hero-card relative mb-12 inline-block"
+              className="hero-card relative mb-12 inline-block perspective-1000"
               style={{
                 rotateX: prefersReducedMotion ? 0 : rotateX,
                 rotateY: prefersReducedMotion ? 0 : rotateY,
                 transformStyle: 'preserve-3d',
                 willChange: prefersReducedMotion ? 'auto' : 'transform',
+                perspective: '1000px',
               }}
               animate={prefersReducedMotion ? {} : {
-                y: [0, -4, 0],
+                y: [0, -6, 0],
               }}
               transition={{
                 y: {
-                  duration: 3,
+                  duration: 4,
                   repeat: Infinity,
                   ease: 'easeInOut',
                 },
               }}
             >
+              {/* 3D Hexagon Container */}
               <motion.div
-                className="relative rounded-3xl p-10 md:p-14 bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/25 backdrop-blur-xl border border-primary/40"
-                animate={isHovered ? {
-                  scale: 1.05,
-                } : {
-                  scale: 1,
-                }}
-                transition={{ duration: 0.3 }}
+                className="relative"
                 style={{
-                  boxShadow: '0 25px 70px rgba(168, 85, 247, 0.4), 0 0 0 1px rgba(0, 212, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
+                  transformStyle: 'preserve-3d',
+                }}
+                animate={prefersReducedMotion ? {} : {
+                  rotateY: [0, 360],
+                  rotateX: [0, 15, 0],
+                }}
+                transition={{
+                  rotateY: {
+                    duration: 20,
+                    repeat: Infinity,
+                    ease: 'linear',
+                  },
+                  rotateX: {
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  },
                 }}
               >
-                {/* Inner glow layers */}
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/15 via-transparent to-black/25 pointer-events-none" />
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-primary/10 via-transparent to-secondary/10 pointer-events-none" />
-                
-                {/* Content */}
-                <div className="relative z-10">
-                  <div className="text-2xl md:text-3xl font-display font-semibold text-text-primary mb-3">
-                    AI Creative Lab
+                {/* Outer rotating hexagon frame */}
+                <motion.div
+                  className="absolute inset-0"
+                  style={{
+                    transformStyle: 'preserve-3d',
+                  }}
+                  animate={prefersReducedMotion ? {} : {
+                    rotateZ: [0, -360],
+                  }}
+                  transition={{
+                    duration: 15,
+                    repeat: Infinity,
+                    ease: 'linear',
+                  }}
+                >
+                  <svg
+                    width="400"
+                    height="400"
+                    viewBox="0 0 400 400"
+                    className="absolute -inset-20 md:-inset-24"
+                    style={{ filter: 'drop-shadow(0 0 40px rgba(168, 85, 247, 0.5))' }}
+                  >
+                    <defs>
+                      <linearGradient id="hexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="rgba(168, 85, 247, 0.8)" />
+                        <stop offset="50%" stopColor="rgba(0, 212, 255, 0.6)" />
+                        <stop offset="100%" stopColor="rgba(236, 72, 153, 0.8)" />
+                      </linearGradient>
+                    </defs>
+                    <polygon
+                      points="200,50 350,125 350,275 200,350 50,275 50,125"
+                      fill="none"
+                      stroke="url(#hexGradient)"
+                      strokeWidth="2"
+                      opacity="0.6"
+                    />
+                  </svg>
+                </motion.div>
+
+                {/* Main 3D Card with hexagon shape */}
+                <motion.div
+                  className="relative p-10 md:p-14"
+                  style={{
+                    clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+                    background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(0, 212, 255, 0.25), rgba(236, 72, 153, 0.3))',
+                    backdropFilter: 'blur(20px)',
+                    border: '2px solid rgba(168, 85, 247, 0.4)',
+                    boxShadow: '0 30px 80px rgba(168, 85, 247, 0.5), 0 0 0 1px rgba(0, 212, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+                    transform: 'translateZ(50px)',
+                  }}
+                  animate={isHovered ? {
+                    scale: 1.08,
+                    rotateZ: [0, 5, -5, 0],
+                  } : {
+                    scale: 1,
+                    rotateZ: 0,
+                  }}
+                  transition={{ duration: 0.4 }}
+                >
+                  {/* Animated gradient overlay */}
+                  <motion.div
+                    className="absolute inset-0"
+                    style={{
+                      clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+                      background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(0, 212, 255, 0.15), rgba(236, 72, 153, 0.2))',
+                    }}
+                    animate={prefersReducedMotion ? {} : {
+                      backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
+                    }}
+                    transition={{
+                      duration: 8,
+                      repeat: Infinity,
+                      ease: 'linear',
+                    }}
+                  />
+
+                  {/* Inner glow layers */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/30 pointer-events-none" style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/15 via-transparent to-secondary/15 pointer-events-none" style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }} />
+                  
+                  {/* Content */}
+                  <div className="relative z-10 text-center">
+                    <motion.div
+                      className="text-2xl md:text-3xl font-display font-semibold text-text-primary mb-3"
+                      animate={prefersReducedMotion ? {} : {
+                        backgroundPosition: ['0%', '100%', '0%'],
+                      }}
+                      transition={{
+                        duration: 5,
+                        repeat: Infinity,
+                        ease: 'linear',
+                      }}
+                      style={{
+                        background: 'linear-gradient(90deg, #00d4ff, #a855f7, #ec4899, #00d4ff)',
+                        backgroundSize: '200% 100%',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                      }}
+                    >
+                      AI Creative Lab
+                    </motion.div>
+                    <p className="text-base md:text-lg text-text-secondary">
+                      Motion-first, AI-focused experiences
+                    </p>
                   </div>
-                  <p className="text-base md:text-lg text-text-secondary">
-                    Motion-first, AI-focused experiences
-                  </p>
-                </div>
+
+                  {/* Floating particles inside */}
+                  {[...Array(6)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-2 h-2 rounded-full bg-primary/60"
+                      style={{
+                        top: `${20 + i * 15}%`,
+                        left: `${15 + i * 12}%`,
+                      }}
+                      animate={prefersReducedMotion ? {} : {
+                        y: [0, -20, 0],
+                        opacity: [0.4, 0.8, 0.4],
+                        scale: [1, 1.5, 1],
+                      }}
+                      transition={{
+                        duration: 3 + i * 0.5,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                        delay: i * 0.3,
+                      }}
+                    />
+                  ))}
+                </motion.div>
+
+                {/* Outer glow rings */}
+                <motion.div
+                  className="absolute inset-0 -z-10"
+                  animate={prefersReducedMotion ? {} : {
+                    scale: [1, 1.2, 1],
+                    opacity: [0.5, 0.8, 0.5],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                >
+                  <div
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      background: 'radial-gradient(circle, rgba(168, 85, 247, 0.4), rgba(0, 212, 255, 0.3), transparent)',
+                      filter: 'blur(40px)',
+                      transform: 'translateZ(-50px)',
+                    }}
+                  />
+                </motion.div>
 
                 {/* Edge glow */}
                 <motion.div
-                  className="absolute -inset-1 rounded-3xl bg-gradient-to-br from-primary/30 via-secondary/30 to-accent/30 blur-2xl -z-10"
+                  className="absolute -inset-4 -z-10"
+                  style={{
+                    clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+                    background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.4), rgba(0, 212, 255, 0.3), rgba(236, 72, 153, 0.4))',
+                    filter: 'blur(20px)',
+                  }}
                   animate={isHovered ? {
-                    opacity: 0.7,
-                    scale: 1.15,
+                    opacity: 0.8,
+                    scale: 1.2,
                   } : {
-                    opacity: 0.4,
+                    opacity: 0.5,
                     scale: 1,
                   }}
                   transition={{ duration: 0.3 }}
