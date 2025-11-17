@@ -165,7 +165,6 @@ export default function AnimatedGradientBackground() {
         style={{
           y: parallaxY,
           willChange: 'transform',
-          imageRendering: 'optimizeQuality',
         }}
       />
       {/* Subtle overlay to ensure text readability */}
