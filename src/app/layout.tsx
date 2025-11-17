@@ -31,8 +31,8 @@ export default function RootLayout({
         {/* Full-screen animated gradient background - baunov/gradients-bg */}
         <div className="fixed inset-0 -z-10">
           <BackgroundGradientAnimation
-            gradientBackgroundStart="rgb(15, 15, 20)"
-            gradientBackgroundEnd="rgb(0, 17, 82)"
+            gradientBackgroundStart="rgb(10, 10, 15)"
+            gradientBackgroundEnd="rgb(5, 10, 25)"
             firstColor="168, 85, 247"
             secondColor="0, 212, 255"
             thirdColor="236, 72, 153"
@@ -40,10 +40,12 @@ export default function RootLayout({
             fifthColor="168, 85, 247"
             pointerColor="140, 100, 255"
             size="80%"
-            blendingValue="hard-light"
+            blendingValue="normal"
             interactive={true}
             containerClassName="w-full h-full"
           />
+          {/* Dark overlay for better text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60 pointer-events-none" />
         </div>
         <div className="relative z-10">
           {children}
